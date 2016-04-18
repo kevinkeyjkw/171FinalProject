@@ -129,7 +129,7 @@ function addlocations(){
 
 
     function reset() {
-        var bounds = d3path.bounds(cities), topLeft = bounds[0], bottomRight = bounds[1];
+        var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
 
         // Setting the size and location of the overall SVG container
         svg
@@ -244,26 +244,29 @@ function slideUpdateTimelapse(month){
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
         cleanedDataFeatures.filter(function(d){
+            if(d.properties.country == "Vietnam"){
+                console.log(d.geometry.coordinates);
+            }
             return d.properties.date.getMonth()+1 == month;
         })
     );
+    console.log(filteredCities);
 
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
         .append("circle")
-        .style("fill", "red")
+        .style("fill", "#FF4545")
+        .style("opacity", 0.4)
         .attr("class", "points")
         .attr("r", 2);
-
-    console.log("slide!");
 
     reset();
     map.on("viewreset", reset);
 
 
     function reset() {
-        var bounds = d3path.bounds(cities), topLeft = bounds[0], bottomRight = bounds[1];
+        var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
 
         // Setting the size and location of the overall SVG container
         svg
