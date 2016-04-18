@@ -31,7 +31,7 @@ function applyLatLngToLayer(d) {
 
 
 //create map object and set default positions and zoom level
-var map = L.map('map').setView([19.89072, 90.7470], 5);
+var map = L.map('map').setView([19.89072, 90.7470], 4);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
     {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 
@@ -64,30 +64,51 @@ function addlocations(){
 
     g.selectAll("circle.points").remove();
 
-    var locations = g.selectAll("circle")
-        .data(cities.features).enter().append("circle")
-        .style("fill", "red")
-        .style("opacity", 0.6);
+    // Filter depending on user selection
+    var filteredCities = cities;
 
-    locations.transition()
-        .delay(function (d) {return speed*d.properties.t;})
-        .attr("r", 5)
-        .attr("class", "points");
+    var locations = g.selectAll("circle")
+        .data(filteredCities.features)
+        .enter()
+        .append("circle")
+        .style("opacity", 0.0);
+
+        locations.transition()
+            .delay(function (d) {
+                return speed*d.properties.t;
+            })
+        .style("fill", function(d){
+            return conflictTypeColor(d);
+        })
+        .style("opacity", 0.7)
+        .attr("class", "points")
+        .attr("r", 3)
+        .transition()
+        .style("opacity",0.0)
+        .attr("r", 30)
+        .duration(1500)
+        .transition()
+        .style("opacity", 0.7)
+        .attr("r", 3)
+        .duration(0)
+        ;
 
 
     var timer= svg2.selectAll(".text")
         .data(cities.features).enter().append("text")
-        .transition().delay(function (d) {return speed* d.properties.t;})
+        .transition()
+        .delay(function (d) {return speed* d.properties.t;})
         .attr("x", 80)
-        .attr("y", 20)
+        .attr("y", 18)
         .attr("class", "timer")
         .style("font-size", "20px")
         .style("opacity", 1)
         .text(function (d) {
-            console.log(d.properties.name);
             return d.properties.name;
         })
-        .transition().duration(speed*0.5).style("opacity", 0);
+        .transition()
+        ////.duration(speed*0.5)
+        .style("opacity", 0);
 
 
     reset();
@@ -116,4 +137,9 @@ function addlocations(){
 
 
 
-};
+}
+
+function conflictTypeColor(d){
+    // Return color depending on d conflict type
+    return "#FF4545";
+}
