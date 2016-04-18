@@ -1,3 +1,14 @@
+// References
+// http://stackoverflow.com/questions/10224856/jquery-ui-slider-labels-under-slider
+
+var months = ["Jan", "Feb", "Mar", "Apr","May", "Jun","Jul" , "Aug", "Sept", "Oct", "Nov", "Dec" ];
+var months_dict = {}
+months.forEach(function(d, idx){
+    months_dict[idx+1] = d;
+});
+
+
+
 var cities={"type": "FeatureCollection", "features": [
 
         {"type": "Feature", "properties": {"name":"India", "t":1},"geometry": {"type": "Point", "coordinates": [78.962880, 20.593684]}},
@@ -5,7 +16,6 @@ var cities={"type": "FeatureCollection", "features": [
         {"type": "Feature", "properties": {"name":"Pakistan", "t":3},"geometry": {"type": "Point", "coordinates": [69.345116, 30.375321]}},
 
     ]};
-
 
 var time_lkup=[
     {"t":1, "date":"01-01-2015"},
@@ -57,58 +67,61 @@ var time = svg2.append("text")
     .style("font-size", "20px")
     .text("Date:");
 
+var dateFormat = d3.time.format("%d-%B-%Y");
 
+var cleanedData;
+var cleanedDataFeatures = [];
+var featureCollection;
 
+function readData(){
+    d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
+
+        allData.forEach(function(d){
+            d.EVENT_DATE = dateFormat.parse(d.EVENT_DATE);
+            d.FATALITIeS = +d.FATALITIES;
+            d.LATITUDE = +d.LATITUDE;
+            d.LONGITUDE = +d.LONGITUDE;
+        });
+
+        cleanedData = allData;
+        cleanedData.forEach(function(d){
+            if(d.LATITUDE != null && d.LONGITUDE != null){
+                cleanedDataFeatures.push(   {"type": "Feature", "properties": {"country": d.COUNTRY, "date": d.EVENT_DATE},"geometry": {"type": "Point", "coordinates": [d.LONGITUDE, d.LATITUDE]}});
+            }
+
+        });
+
+        featureCollection = convertToFeatures(cleanedDataFeatures);
+        console.log(featureCollection);
+
+    });
+}
+readData();
+
+function convertToFeatures(features){
+    return {"type": "FeatureCollection", "features": features};
+}
 
 function addlocations(){
 
     g.selectAll("circle.points").remove();
 
     // Filter depending on user selection
-    var filteredCities = cities;
+    var filteredCities = convertToFeatures(
+        cleanedDataFeatures.filter(function(d){
+            return d.properties.date.getMonth() == 4;
+        })
+    );
+
 
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
         .append("circle")
-        .style("opacity", 0.0);
-
-        locations.transition()
-            .delay(function (d) {
-                return speed*d.properties.t;
-            })
-        .style("fill", function(d){
-            return conflictTypeColor(d);
-        })
-        .style("opacity", 0.7)
+        .style("fill", "red")
         .attr("class", "points")
-        .attr("r", 3)
-        .transition()
-        .style("opacity",0.0)
-        .attr("r", 30)
-        .duration(1500)
-        .transition()
-        .style("opacity", 0.7)
-        .attr("r", 3)
-        .duration(0)
-        ;
+        .attr("r", 2);
 
-
-    var timer= svg2.selectAll(".text")
-        .data(cities.features).enter().append("text")
-        .transition()
-        .delay(function (d) {return speed* d.properties.t;})
-        .attr("x", 80)
-        .attr("y", 18)
-        .attr("class", "timer")
-        .style("font-size", "20px")
-        .style("opacity", 1)
-        .text(function (d) {
-            return d.properties.name;
-        })
-        .transition()
-        ////.duration(speed*0.5)
-        .style("opacity", 0);
 
 
     reset();
@@ -135,11 +148,172 @@ function addlocations(){
             });
     }
 
-
-
 }
+
+//function addlocations(){
+//
+//    g.selectAll("circle.points").remove();
+//
+//    // Filter depending on user selection
+//    var filteredCities = cleanedDataFeatures;
+//
+//    var locations = g.selectAll("circle")
+//        .data(filteredCities.features)
+//        .enter()
+//        .append("circle")
+//        .style("opacity", 0.0);
+//
+//        locations.transition()
+//            .delay(function (d) {
+//                //return speed*d.properties.t;
+//                return 1;
+//            })
+//        .style("fill", function(d){
+//            return conflictTypeColor(d);
+//        })
+//        .style("opacity", 0.7)
+//        .attr("class", "points")
+//        .attr("r", 3)
+//        .transition()
+//        .style("opacity",0.0)
+//        .attr("r", 30)
+//        .duration(1500)
+//        .transition()
+//        .style("opacity", 0.7)
+//        .attr("r", 3)
+//        .duration(0)
+//        ;
+//
+//
+//    var timer= svg2.selectAll(".text")
+//        .data(filteredCities.features).enter().append("text")
+//        .transition()
+//        .delay(function (d) {
+//            //return speed* d.properties.t;
+//            return 1;
+//        })
+//        .attr("x", 80)
+//        .attr("y", 18)
+//        .attr("class", "timer")
+//        .style("font-size", "20px")
+//        .style("opacity", 1)
+//        .text(function (d) {
+//            return d.properties.name;
+//        })
+//        .transition()
+//        ////.duration(speed*0.5)
+//        .style("opacity", 0);
+//
+//
+//    reset();
+//    map.on("viewreset", reset);
+//
+//
+//    function reset() {
+//        var bounds = d3path.bounds(cities), topLeft = bounds[0], bottomRight = bounds[1];
+//
+//        // Setting the size and location of the overall SVG container
+//        svg
+//            .attr("width", bottomRight[0] - topLeft[0] + 120)
+//            .attr("height", bottomRight[1] - topLeft[1] + 120)
+//            .style("left", topLeft[0] - 50 + "px")
+//            .style("top", topLeft[1] - 50 + "px");
+//
+//        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+//
+//        locations.attr("transform",
+//            function(d) {
+//                return "translate(" +
+//                    applyLatLngToLayer(d).x + "," +
+//                    applyLatLngToLayer(d).y + ")";
+//            });
+//    }
+//
+//
+//
+//}
 
 function conflictTypeColor(d){
     // Return color depending on d conflict type
     return "#FF4545";
 }
+
+function slideUpdateTimelapse(month){
+    g.selectAll("circle.points").remove();
+
+    // Filter depending on user selection
+    var filteredCities = convertToFeatures(
+        cleanedDataFeatures.filter(function(d){
+            return d.properties.date.getMonth()+1 == month;
+        })
+    );
+
+    var locations = g.selectAll("circle")
+        .data(filteredCities.features)
+        .enter()
+        .append("circle")
+        .style("fill", "red")
+        .attr("class", "points")
+        .attr("r", 2);
+
+    console.log("slide!");
+
+    reset();
+    map.on("viewreset", reset);
+
+
+    function reset() {
+        var bounds = d3path.bounds(cities), topLeft = bounds[0], bottomRight = bounds[1];
+
+        // Setting the size and location of the overall SVG container
+        svg
+            .attr("width", bottomRight[0] - topLeft[0] + 120)
+            .attr("height", bottomRight[1] - topLeft[1] + 120)
+            .style("left", topLeft[0] - 50 + "px")
+            .style("top", topLeft[1] - 50 + "px");
+
+        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+
+        locations.attr("transform",
+            function(d) {
+                return "translate(" +
+                    applyLatLngToLayer(d).x + "," +
+                    applyLatLngToLayer(d).y + ")";
+            });
+    }
+}
+
+
+$("#slider").slider({
+        value: 4,
+        min: 1,
+        max: 12,
+        step: 1,
+        slide: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.value );
+            slideUpdateTimelapse(ui.value);
+        }
+    })
+    .each(function() {
+
+        // Add labels to slider whose values
+        // are specified by min, max
+
+        // Get the options for this slider (specified above)
+        var opt = $(this).data().uiSlider.options;
+
+        // Get the number of possible values
+        var vals = opt.max - opt.min;
+
+        // Position the labels
+        for (var i = 0; i <= vals; i++) {
+
+            // Create a new element and position it with percentages
+            var el = $('<label>' + months_dict[i + 1] + '</label>').css('left', (i/vals*100) + '%');
+
+            // Add the element inside #slider
+            $("#slider").append(el);
+
+        }
+
+    });

@@ -116,7 +116,20 @@ textarea {
 
 
 
+#slider label {
+    position: absolute;
+    width: 20px;
+    margin-left: -10px;
+    margin-right: 5px;
+    text-align: center;
+    margin-top: 20px;
+}
 
+/* below is not necessary, just for style */
+#slider {
+    width: 50%;
+    margin: 2em auto;
+}
 
 
 
