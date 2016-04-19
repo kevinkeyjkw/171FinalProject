@@ -111,9 +111,17 @@ textarea {
     background: #F0F8FF;
 }
 
+.control {
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+}
 
-
-
+.day {
+    color: black;
+    font-size: 40px;
+    left: 0;
+}
 #notes {
     width: 800px;
     height: 200px;

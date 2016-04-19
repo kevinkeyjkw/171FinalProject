@@ -7,7 +7,7 @@ months.forEach(function(d, idx){
     months_dict[idx+1] = d;
 });
 
-
+var interval
 
 var cities={"type": "FeatureCollection", "features": [
 
@@ -24,7 +24,7 @@ var time_lkup=[
 ];
 
 var speed=800;
-var timelapse_totaltime = 240;
+var timelapse_totaltime = 120;
 
 function projectPoint(x, y) {
     var point = map.latLngToLayerPoint(new L.LatLng(y, x));
@@ -43,9 +43,12 @@ function applyLatLngToLayer(d) {
 
 //create map object and set default positions and zoom level
 var map = L.map('map').setView([19.89072, 90.7470], 4);
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-    {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+//    {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 
+L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 // Markers
 var markers;
 var latitude = 1;
@@ -67,11 +70,17 @@ var svg2 = d3.select("#time").append("svg")
     .attr("width", 800)
     .attr("class", "time");
 
-var time = svg2.append("text")
-    .attr("x", 10)
-    .attr("y", 20)
-    .attr("class", "time")
-    .style("font-size", "20px");
+var svg3 = d3.select("#day").append("svg")
+    .attr("height", 50)
+    .attr("width", 50);
+
+
+
+//var time = svg2.append("text")
+//    .attr("x", 10)
+//    .attr("y", 20)
+//    .attr("class", "time")
+//    .style("font-size", "20px");
 
 var dateFormat = d3.time.format("%d-%B-%Y");
 
@@ -114,9 +123,13 @@ function readData(){
         legend.addTo(map);
         cleanedData = allData;
         var i = 0;
-        while(notes.length < timelapse_totaltime/notesDelay){
-            if(cleanedData[i].NOTES != null){
-                notes.push(cleanedData[i].NOTES);
+        while(notes.length < timelapse_totaltime/notesDelay && i < cleanedData.length){
+
+            if(cleanedData[i] != undefined) {
+                if (cleanedData[i].NOTES != undefined && cleanedData[i].NOTES.length < 160) {
+                    notes.push(cleanedData[i].NOTES);
+
+                }
             }
             i += 1;
         }
@@ -163,12 +176,10 @@ function calculateDelay(date){
     return t;
 }
 
+// stop time lapse
 function stop(){
-
     g.selectAll("circle").transition();
     svg2.selectAll(".timer").transition().delay(0);
-    //reset();
-    //map.on("viewreset", reset);
 
 }
 // Play timelapse
@@ -229,6 +240,17 @@ function addlocations(){
     //var timer= svg2.selectAll(".text")
     //    .data(notes).enter().append("text")
     //    ;
+    var secondsPassed = 0;
+    var dayNumber = 0;
+    var interval = window.setInterval(function(){
+        secondsPassed += timelapse_totaltime/366;
+        dayNumber += 1;
+        if(secondsPassed > timelapse_totaltime){
+            clearInterval(interval);
+            return;
+        }
+       $("#day").html(dayNumber);
+    }, (timelapse_totaltime/366) * 1000);
 
     var timer= svg2.selectAll("foreignObject")
         .data(notes).enter().append('foreignObject')
@@ -236,7 +258,7 @@ function addlocations(){
         //.attr('height', 200)
         .append("xhtml:div")
         .html(function(d){
-            return '<div style="width: 1000px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
+            return '<div style="width: 800px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
         }).style("opacity", 0.0);
 
     timer
@@ -250,6 +272,8 @@ function addlocations(){
         .attr("y", 12)
         .attr("class", "timer")
         .style("opacity", 1.0)
+        .style("font-family", "Courier New")
+        .style("color", "black")
         .transition()
         .duration(notesDelay*800)
         .style("opacity", 0.0)
@@ -285,12 +309,16 @@ function addlocations(){
 }
 
 function slideUpdateTimelapse(month){
+    // stop time lapse
+    g.selectAll("circle").transition();
+    svg2.selectAll(".timer").transition().delay(0);
     //if(markers != null){
     //    map.removeLayer(markers);
     //}
     //
     //markers = L.layerGroup().addTo(map);
-    g.selectAll("circle.points").remove();
+    g.selectAll("circle").remove();
+    svg2.selectAll(".timer").remove();
 
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
@@ -309,7 +337,7 @@ function slideUpdateTimelapse(month){
         })
         .style("opacity", 0.4)
         .attr("class", "points")
-        .attr("r", 5)
+        .attr("r", 3)
         ;
 
 
@@ -359,6 +387,7 @@ function slideUpdateTimelapse(month){
 
 
 $("#slider").slider({
+        orientation: "vertical",
         value: 4,
         min: 1,
         max: 12,
@@ -383,7 +412,13 @@ $("#slider").slider({
         for (var i = 0; i <= vals; i++) {
 
             // Create a new element and position it with percentages
-            var el = $('<label>' + months_dict[i + 1] + '</label>').css('left', (i/vals*100) + '%');
+            //var el = $('<label>' + months_dict[i + 1] + '</label>').css('top', (i/vals*100) + '%');
+            var el = $('<label>' + months_dict[i + 1] + '</label>').css(
+                {
+                    top: (i/vals*100)-8 + '%',
+                    right: -30
+                }
+            );
 
             // Add the element inside #slider
             $("#slider").append(el);
