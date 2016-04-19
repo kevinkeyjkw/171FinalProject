@@ -44,7 +44,24 @@ function applyLatLngToLayer(d) {
 
 
 //create map object and set default positions and zoom level
-var map = L.map('map').setView([19.89072, 90.7470], 4);
+var map = L.map('map',{
+    scrollWheelZoom: false
+}).setView([19.89072, 90.7470], 4);
+map.on('mouseout',function(){
+        map.scrollWheelZoom.disable();
+
+});
+map.on('click', function() {
+    //if (map.scrollWheelZoom.enabled()) {
+    //    map.scrollWheelZoom.disable();
+    //}
+    //else {
+    //    map.scrollWheelZoom.enable();
+    //}
+    map.scrollWheelZoom.enable();
+});
+
+//map.once('focus', function() { map.scrollWheelZoom.enable(); });
 //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 //    {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 
