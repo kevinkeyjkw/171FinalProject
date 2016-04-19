@@ -7,7 +7,9 @@ months.forEach(function(d, idx){
     months_dict[idx+1] = d;
 });
 
-var interval
+var dayInterval, secondsPassed = 0, dayNumber = 0;
+var notes = [], notesDelay = 7, noteInterval, notesPassed;
+var noteFadeIn = 3, noteFadeOut = notesDelay - noteFadeIn;
 
 var cities={"type": "FeatureCollection", "features": [
 
@@ -89,8 +91,7 @@ var cleanedDataFeatures = [];
 var featureCollection;
 var conflictTypes = [];
 var c20 = d3.scale.category20();
-var notes = []
-var notesDelay = 7;
+
 
 function readData(){
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
@@ -104,8 +105,6 @@ function readData(){
                 conflictTypes.push(d.EVENT_TYPE);
             }
         });
-        //console.log(allData);
-        console.log(conflictTypes);
         legend.onAdd = function(map){
             var div = L.DomUtil.create('div', 'info legend'),
                 labels = [];
@@ -133,7 +132,6 @@ function readData(){
             }
             i += 1;
         }
-        console.log(notes);
         cleanedData.forEach(function(d){
             if(d.LATITUDE != null && d.LONGITUDE != null){
                 cleanedDataFeatures.push({
@@ -169,24 +167,21 @@ var tooltip = d3.select("body").append("div")
 
 function calculateDelay(date){
     var t = (date.getMonth() * (timelapse_totaltime/12) + date.getDate() * ((timelapse_totaltime/12)/30))*1000;
-    //console.log('coef',(timelapse_totaltime/12));
-    //console.log('month',date.getMonth() * (timelapse_totaltime/12) * 1000);
-    //console.log('day',date.getDate() * ((timelapse_totaltime/12)/30));
-    //console.log(t);
     return t;
 }
 
 // stop time lapse
 function stop(){
     g.selectAll("circle").transition();
-    svg2.selectAll(".timer").transition().delay(0);
-
+    g.selectAll("circle").remove();
+    clearInterval(noteInterval);
+    clearInterval(dayInterval);
 }
 // Play timelapse
 function addlocations(){
 
     g.selectAll("circle").remove();
-    svg2.selectAll(".timer").remove();
+    svg2.selectAll("text.notes").remove();
 
     // Filter depending on user selection
 
@@ -201,19 +196,6 @@ function addlocations(){
         .style("opacity", 0.0)
         .attr("fill", "transparent");
 
-    //locations
-        //.on("mouseover", function(d) {
-        //    console.log("tooltip");
-        //    tooltip.transition()
-        //        .duration(200)
-        //        .style("opacity", .9);
-        //    tooltip.html(d.properties.country);
-        //})
-        //.on("mouseout", function(d) {
-        //    tooltip.transition()
-        //        .duration(500)
-        //        .style("opacity", 0);
-        //});
 
         locations.transition()
             .delay(function (d) {
@@ -237,48 +219,33 @@ function addlocations(){
             ;
 
 
-    //var timer= svg2.selectAll(".text")
-    //    .data(notes).enter().append("text")
-    //    ;
-    var secondsPassed = 0;
-    var dayNumber = 0;
-    var interval = window.setInterval(function(){
+    secondsPassed = 0;
+    dayNumber = 0;
+    dayInterval = window.setInterval(function(){
         secondsPassed += timelapse_totaltime/366;
         dayNumber += 1;
         if(secondsPassed > timelapse_totaltime){
-            clearInterval(interval);
+            clearInterval(dayInterval);
             return;
         }
        $("#day").html(dayNumber);
     }, (timelapse_totaltime/366) * 1000);
 
-    var timer= svg2.selectAll("foreignObject")
-        .data(notes).enter().append('foreignObject')
-        //.attr('width', 800)
-        //.attr('height', 200)
-        .append("xhtml:div")
-        .html(function(d){
-            return '<div style="width: 800px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
-        }).style("opacity", 0.0);
+    $("#blah").html("blah").fadeIn(5000);
 
-    timer
-        .transition()
-        .delay(function (d, idx) {
-            console.log(d,idx);
-            //return speed* d.properties.t;
-            return idx * notesDelay * 1000;
-        })
-        .attr("x", 100)
-        .attr("y", 12)
-        .attr("class", "timer")
-        .style("opacity", 1.0)
-        .style("font-family", "Courier New")
-        .style("color", "black")
-        .transition()
-        .duration(notesDelay*800)
-        .style("opacity", 0.0)
-        ;
+    notesPassed = 0;
+    $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
+    $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
+    noteInterval = window.setInterval(function(){
 
+        if(notesPassed > notes.length){
+            clearInterval(noteInterval);
+            return;
+        }
+        notesPassed += 1;
+        $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
+        $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
+    }, notesDelay * 1000);
 
     reset();
     map.on("viewreset", reset);
@@ -311,14 +278,11 @@ function addlocations(){
 function slideUpdateTimelapse(month){
     // stop time lapse
     g.selectAll("circle").transition();
-    svg2.selectAll(".timer").transition().delay(0);
-    //if(markers != null){
-    //    map.removeLayer(markers);
-    //}
-    //
-    //markers = L.layerGroup().addTo(map);
     g.selectAll("circle").remove();
-    svg2.selectAll(".timer").remove();
+    // stop day count and note
+    clearInterval(dayInterval);
+    clearInterval(noteInterval);
+
 
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
@@ -341,28 +305,9 @@ function slideUpdateTimelapse(month){
         ;
 
 
-//.attr("data-legend",function(d){
-//        return d.properties.conflict_type;
-//    })
-    //legend = svg.append("g")
-    //    .attr("class", "legend")
-    //    .attr("transform", "translate(520,30)")
-    //    .style("font-size", "12px")
-    //    .call(d3.legend);
-
     console.log("conflict type legend",c20.domain(),c20.range());
     reset();
     map.on("viewreset", reset);
-
-    //cleanedDataFeatures.filter(function(d){
-    //    return d.properties.date.getMonth()+1 == month;
-    //}).forEach(function(d, idx){
-    //    var popupContent = "<strong>" + d.properties.country + "</strong>";
-    //    var marker = L.marker([d.geometry.coordinates[latitude], d.geometry.coordinates[longitude]])
-    //        .bindPopup(popupContent)
-    //        .addTo(map);
-    //    markers.addLayer(marker);
-    //});
 
     function reset() {
         var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
@@ -426,3 +371,31 @@ $("#slider").slider({
         }
 
     });
+
+
+//var notesText = svg2.selectAll("text.notes")
+//    .data(notes).enter().append('text.notes')
+//    //.attr('width', 800)
+//    //.attr('height', 200)
+//    .append("xhtml:div")
+//    .html(function(d){
+//        return '<div style="width: 800px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
+//    }).style("opacity", 0.0);
+//
+//notesText
+//    .transition()
+//    .delay(function (d, idx) {
+//        console.log(d,idx);
+//        //return speed* d.properties.t;
+//        return idx * notesDelay * 1000;
+//    })
+//    .attr("x", 100)
+//    .attr("y", 12)
+//    //.attr("class", "timer")
+//    .style("opacity", 1.0)
+//    .style("font-family", "Courier New")
+//    .style("color", "black")
+//    .transition()
+//    .duration(notesDelay*800)
+//    .style("opacity", 0.0)
+//    ;
