@@ -106,7 +106,7 @@ textarea {
     margin:5px 10%;
     border:2px solid #000;
     border-radius: 5px;
-    height:800px;
+    height:600px;
     overflow:hidden;
     background: #F0F8FF;
 }
@@ -131,9 +131,31 @@ textarea {
     margin: 2em auto;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
 
-
-
+.legend {
+    line-height: 18px;
+    color: #555;
+    background-color: aliceblue;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
 
 
 /* ==========================================================================

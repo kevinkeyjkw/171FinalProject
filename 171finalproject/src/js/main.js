@@ -24,6 +24,7 @@ var time_lkup=[
 ];
 
 var speed=800;
+var timelapse_totaltime = 240;
 
 function projectPoint(x, y) {
     var point = map.latLngToLayerPoint(new L.LatLng(y, x));
@@ -45,12 +46,17 @@ var map = L.map('map').setView([19.89072, 90.7470], 4);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
     {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 
-
+// Markers
+var markers;
+var latitude = 1;
+var longitude = 0;
 
 // appending the SVG to the Leaflet map pane
 // g (group) element will be inside the svg
 var svg = d3.select(map.getPanes().overlayPane).append("svg");
 var g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+var legend = L.control({position: 'topright'});
 
 
 var transform = d3.geo.transform({point: projectPoint});
@@ -72,6 +78,8 @@ var dateFormat = d3.time.format("%d-%B-%Y");
 var cleanedData;
 var cleanedDataFeatures = [];
 var featureCollection;
+var conflictTypes = [];
+var c20 = d3.scale.category20();
 
 function readData(){
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
@@ -81,12 +89,40 @@ function readData(){
             d.FATALITIeS = +d.FATALITIES;
             d.LATITUDE = +d.LATITUDE;
             d.LONGITUDE = +d.LONGITUDE;
+            if(conflictTypes.indexOf(d.EVENT_TYPE) == -1){
+                conflictTypes.push(d.EVENT_TYPE);
+            }
         });
+        //console.log(allData);
+        console.log(conflictTypes);
+        legend.onAdd = function(map){
+            var div = L.DomUtil.create('div', 'info legend'),
+                labels = [];
 
+            // loop through our density intervals and generate a label with a colored square for each interval
+            for (var i = 0; i < conflictTypes.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + c20(conflictTypes[i]) + '"></i> ' +
+                    conflictTypes[i] + '<br>';
+            }
+
+            return div;
+        };
+
+        legend.addTo(map);
         cleanedData = allData;
         cleanedData.forEach(function(d){
             if(d.LATITUDE != null && d.LONGITUDE != null){
-                cleanedDataFeatures.push(   {"type": "Feature", "properties": {"country": d.COUNTRY, "date": d.EVENT_DATE},"geometry": {"type": "Point", "coordinates": [d.LONGITUDE, d.LATITUDE]}});
+                cleanedDataFeatures.push({
+                        "type": "Feature",
+                        "properties": {"country": d.COUNTRY,
+                        "date": d.EVENT_DATE,
+                        "conflict_type": d.EVENT_TYPE
+                    },
+                        "geometry": {"type": "Point",
+                                "coordinates": [d.LONGITUDE, d.LATITUDE]
+                                }
+                    });
             }
 
         });
@@ -102,26 +138,91 @@ function convertToFeatures(features){
     return {"type": "FeatureCollection", "features": features};
 }
 
+// Tooltip
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+function calculateDelay(date){
+    var t = (date.getMonth() * (timelapse_totaltime/12) + date.getDate() * ((timelapse_totaltime/12)/30))*1000;
+    //console.log('coef',(timelapse_totaltime/12));
+    //console.log('month',date.getMonth() * (timelapse_totaltime/12) * 1000);
+    //console.log('day',date.getDate() * ((timelapse_totaltime/12)/30));
+    console.log(t);
+    return t;
+}
+// Play timelapse
 function addlocations(){
 
     g.selectAll("circle.points").remove();
 
     // Filter depending on user selection
-    var filteredCities = convertToFeatures(
-        cleanedDataFeatures.filter(function(d){
-            return d.properties.date.getMonth() == 4;
-        })
-    );
 
+    var filteredCities = convertToFeatures(
+        cleanedDataFeatures//.filter(function(d){return d.properties.date.getMonth()==0;})
+    );
 
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
         .append("circle")
-        .style("fill", "red")
-        .attr("class", "points")
-        .attr("r", 2);
+        .style("opacity", 0.0)
+        .attr("fill", "transparent");
 
+    //locations
+        //.on("mouseover", function(d) {
+        //    console.log("tooltip");
+        //    tooltip.transition()
+        //        .duration(200)
+        //        .style("opacity", .9);
+        //    tooltip.html(d.properties.country);
+        //})
+        //.on("mouseout", function(d) {
+        //    tooltip.transition()
+        //        .duration(500)
+        //        .style("opacity", 0);
+        //});
+
+        locations.transition()
+            .delay(function (d) {
+                //return speed*d.properties.t;
+                return calculateDelay(d.properties.date);
+            })
+            .attr("fill", function(d){
+                return c20(d.properties.conflict_type);
+            })
+            .style("opacity", 0.7)
+            .attr("class", "points")
+            .attr("r", 3)
+            .transition()
+            .style("opacity",0.0)
+            .attr("r", 20)
+            .duration(1500)
+            .transition()
+            .style("opacity", 0.7)
+            .attr("r", 3)
+            .duration(0)
+            ;
+
+
+    var timer= svg2.selectAll(".text")
+        .data(filteredCities.features).enter().append("text")
+        .transition()
+        .delay(function (d) {
+            //return speed* d.properties.t;
+            return 1;
+        })
+        .attr("x", 80)
+        .attr("y", 18)
+        .attr("class", "timer")
+        .style("font-size", "20px")
+        .style("opacity", 1)
+        .text(function (d) {
+            return d.properties.name;
+        })
+        .transition()
+        ////.duration(speed*0.5)
+        .style("opacity", 0);
 
 
     reset();
@@ -133,7 +234,7 @@ function addlocations(){
 
         // Setting the size and location of the overall SVG container
         svg
-            .attr("width", bottomRight[0] - topLeft[0] + 120)
+            .attr("width", bottomRight[0] - topLeft[0] + 520)
             .attr("height", bottomRight[1] - topLeft[1] + 120)
             .style("left", topLeft[0] - 50 + "px")
             .style("top", topLeft[1] - 50 + "px");
@@ -148,122 +249,61 @@ function addlocations(){
             });
     }
 
-}
 
-//function addlocations(){
-//
-//    g.selectAll("circle.points").remove();
-//
-//    // Filter depending on user selection
-//    var filteredCities = cleanedDataFeatures;
-//
-//    var locations = g.selectAll("circle")
-//        .data(filteredCities.features)
-//        .enter()
-//        .append("circle")
-//        .style("opacity", 0.0);
-//
-//        locations.transition()
-//            .delay(function (d) {
-//                //return speed*d.properties.t;
-//                return 1;
-//            })
-//        .style("fill", function(d){
-//            return conflictTypeColor(d);
-//        })
-//        .style("opacity", 0.7)
-//        .attr("class", "points")
-//        .attr("r", 3)
-//        .transition()
-//        .style("opacity",0.0)
-//        .attr("r", 30)
-//        .duration(1500)
-//        .transition()
-//        .style("opacity", 0.7)
-//        .attr("r", 3)
-//        .duration(0)
-//        ;
-//
-//
-//    var timer= svg2.selectAll(".text")
-//        .data(filteredCities.features).enter().append("text")
-//        .transition()
-//        .delay(function (d) {
-//            //return speed* d.properties.t;
-//            return 1;
-//        })
-//        .attr("x", 80)
-//        .attr("y", 18)
-//        .attr("class", "timer")
-//        .style("font-size", "20px")
-//        .style("opacity", 1)
-//        .text(function (d) {
-//            return d.properties.name;
-//        })
-//        .transition()
-//        ////.duration(speed*0.5)
-//        .style("opacity", 0);
-//
-//
-//    reset();
-//    map.on("viewreset", reset);
-//
-//
-//    function reset() {
-//        var bounds = d3path.bounds(cities), topLeft = bounds[0], bottomRight = bounds[1];
-//
-//        // Setting the size and location of the overall SVG container
-//        svg
-//            .attr("width", bottomRight[0] - topLeft[0] + 120)
-//            .attr("height", bottomRight[1] - topLeft[1] + 120)
-//            .style("left", topLeft[0] - 50 + "px")
-//            .style("top", topLeft[1] - 50 + "px");
-//
-//        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
-//
-//        locations.attr("transform",
-//            function(d) {
-//                return "translate(" +
-//                    applyLatLngToLayer(d).x + "," +
-//                    applyLatLngToLayer(d).y + ")";
-//            });
-//    }
-//
-//
-//
-//}
 
-function conflictTypeColor(d){
-    // Return color depending on d conflict type
-    return "#FF4545";
 }
 
 function slideUpdateTimelapse(month){
+    //if(markers != null){
+    //    map.removeLayer(markers);
+    //}
+    //
+    //markers = L.layerGroup().addTo(map);
     g.selectAll("circle.points").remove();
 
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
         cleanedDataFeatures.filter(function(d){
-            if(d.properties.country == "Vietnam"){
-                console.log(d.geometry.coordinates);
-            }
             return d.properties.date.getMonth()+1 == month;
         })
     );
-    console.log(filteredCities);
 
+    // Add circles
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
         .append("circle")
-        .style("fill", "#FF4545")
+        .attr("fill", function(d){
+            return c20(d.properties.conflict_type);
+        })
         .style("opacity", 0.4)
         .attr("class", "points")
-        .attr("r", 2);
+        .attr("r", 5)
+        ;
 
+
+//.attr("data-legend",function(d){
+//        return d.properties.conflict_type;
+//    })
+    //legend = svg.append("g")
+    //    .attr("class", "legend")
+    //    .attr("transform", "translate(520,30)")
+    //    .style("font-size", "12px")
+    //    .call(d3.legend);
+
+    console.log("conflict type legend",c20.domain(),c20.range());
     reset();
     map.on("viewreset", reset);
 
+    //cleanedDataFeatures.filter(function(d){
+    //    return d.properties.date.getMonth()+1 == month;
+    //}).forEach(function(d, idx){
+    //    var popupContent = "<strong>" + d.properties.country + "</strong>";
+    //    var marker = L.marker([d.geometry.coordinates[latitude], d.geometry.coordinates[longitude]])
+    //        .bindPopup(popupContent)
+    //        .addTo(map);
+    //    markers.addLayer(marker);
+    //});
 
     function reset() {
         var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
