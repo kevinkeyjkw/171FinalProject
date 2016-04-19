@@ -63,15 +63,15 @@ var transform = d3.geo.transform({point: projectPoint});
 var d3path = d3.geo.path().projection(transform);
 
 var svg2 = d3.select("#time").append("svg")
-    .attr("height", 20)
+    .attr("height", 200)
+    .attr("width", 800)
     .attr("class", "time");
 
 var time = svg2.append("text")
     .attr("x", 10)
     .attr("y", 20)
     .attr("class", "time")
-    .style("font-size", "20px")
-    .text("Date:");
+    .style("font-size", "20px");
 
 var dateFormat = d3.time.format("%d-%B-%Y");
 
@@ -80,6 +80,8 @@ var cleanedDataFeatures = [];
 var featureCollection;
 var conflictTypes = [];
 var c20 = d3.scale.category20();
+var notes = []
+var notesDelay = 7;
 
 function readData(){
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
@@ -111,13 +113,22 @@ function readData(){
 
         legend.addTo(map);
         cleanedData = allData;
+        var i = 0;
+        while(notes.length < timelapse_totaltime/notesDelay){
+            if(cleanedData[i].NOTES != null){
+                notes.push(cleanedData[i].NOTES);
+            }
+            i += 1;
+        }
+        console.log(notes);
         cleanedData.forEach(function(d){
             if(d.LATITUDE != null && d.LONGITUDE != null){
                 cleanedDataFeatures.push({
                         "type": "Feature",
                         "properties": {"country": d.COUNTRY,
                         "date": d.EVENT_DATE,
-                        "conflict_type": d.EVENT_TYPE
+                        "conflict_type": d.EVENT_TYPE,
+                        "notes": d.NOTES
                     },
                         "geometry": {"type": "Point",
                                 "coordinates": [d.LONGITUDE, d.LATITUDE]
@@ -148,7 +159,7 @@ function calculateDelay(date){
     //console.log('coef',(timelapse_totaltime/12));
     //console.log('month',date.getMonth() * (timelapse_totaltime/12) * 1000);
     //console.log('day',date.getDate() * ((timelapse_totaltime/12)/30));
-    console.log(t);
+    //console.log(t);
     return t;
 }
 // Play timelapse
@@ -159,7 +170,7 @@ function addlocations(){
     // Filter depending on user selection
 
     var filteredCities = convertToFeatures(
-        cleanedDataFeatures//.filter(function(d){return d.properties.date.getMonth()==0;})
+        cleanedDataFeatures.filter(function(d){return d.properties.date.getMonth() < 5;})
     );
 
     var locations = g.selectAll("circle")
@@ -193,36 +204,46 @@ function addlocations(){
             })
             .style("opacity", 0.7)
             .attr("class", "points")
-            .attr("r", 3)
+            .attr("r", 1)
             .transition()
             .style("opacity",0.0)
             .attr("r", 20)
             .duration(1500)
             .transition()
             .style("opacity", 0.7)
-            .attr("r", 3)
+            .attr("r", 1)
             .duration(0)
             ;
 
 
+    //var timer= svg2.selectAll(".text")
+    //    .data(notes).enter().append("text")
+    //    ;
+
     var timer= svg2.selectAll(".text")
-        .data(filteredCities.features).enter().append("text")
+        .data(notes).enter().append('foreignObject')
+        //.attr('width', 800)
+        //.attr('height', 200)
+        .append("xhtml:div")
+        .html(function(d){
+            return '<div style="width: 1000px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
+        }).style("opacity", 0.0);
+
+    timer
         .transition()
-        .delay(function (d) {
+        .delay(function (d, idx) {
+            console.log(d,idx);
             //return speed* d.properties.t;
-            return 1;
+            return idx * notesDelay * 1000;
         })
-        .attr("x", 80)
-        .attr("y", 18)
+        .attr("x", 100)
+        .attr("y", 12)
         .attr("class", "timer")
-        .style("font-size", "20px")
-        .style("opacity", 1)
-        .text(function (d) {
-            return d.properties.name;
-        })
+        .style("opacity", 1.0)
         .transition()
-        ////.duration(speed*0.5)
-        .style("opacity", 0);
+        .duration(notesDelay*800)
+        .style("opacity", 0.0)
+        ;
 
 
     reset();
