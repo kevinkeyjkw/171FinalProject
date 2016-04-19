@@ -162,10 +162,20 @@ function calculateDelay(date){
     //console.log(t);
     return t;
 }
+
+function stop(){
+
+    g.selectAll("circle").transition();
+    svg2.selectAll(".timer").transition().delay(0);
+    //reset();
+    //map.on("viewreset", reset);
+
+}
 // Play timelapse
 function addlocations(){
 
-    g.selectAll("circle.points").remove();
+    g.selectAll("circle").remove();
+    svg2.selectAll(".timer").remove();
 
     // Filter depending on user selection
 
@@ -220,7 +230,7 @@ function addlocations(){
     //    .data(notes).enter().append("text")
     //    ;
 
-    var timer= svg2.selectAll(".text")
+    var timer= svg2.selectAll("foreignObject")
         .data(notes).enter().append('foreignObject')
         //.attr('width', 800)
         //.attr('height', 200)
