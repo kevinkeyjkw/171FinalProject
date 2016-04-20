@@ -108,20 +108,25 @@ var cleanedDataFeatures = [];
 var featureCollection;
 var conflictTypes = [];
 var c20 = d3.scale.category20();
-
+var fatalitiesScale = d3.scale.linear();
 
 function readData(){
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
 
+        // Convert strings to numbers
         allData.forEach(function(d){
             d.EVENT_DATE = dateFormat.parse(d.EVENT_DATE);
-            d.FATALITIeS = +d.FATALITIES;
+            d.FATALITIES = +d.FATALITIES;
             d.LATITUDE = +d.LATITUDE;
             d.LONGITUDE = +d.LONGITUDE;
-            if(conflictTypes.indexOf(d.EVENT_TYPE) == -1){
-                conflictTypes.push(d.EVENT_TYPE);
+
+            // Determine how many types of conflicts, needed for legend
+            if(conflictTypes.indexOf(d.EVENT_TYPE.trim().toLowerCase()) == -1){
+                conflictTypes.push(d.EVENT_TYPE.trim().toLowerCase());
             }
         });
+
+        // Legend for map
         legend.onAdd = function(map){
             var div = L.DomUtil.create('div', 'info legend'),
                 labels = [];
@@ -135,9 +140,29 @@ function readData(){
 
             return div;
         };
-
         legend.addTo(map);
+
         cleanedData = allData;
+
+        // Mean of fatalities
+        var fatMean = d3.mean(cleanedData.map(function(d){return d.FATALITIES;}));
+
+        // Scale for circle radius
+        fatalitiesScale.domain([d3.min(cleanedData, function(d){
+            if(d.FATALITIES != null){
+                return d.FATALITIES;
+            }
+            // the data has no fatality number, return mean
+            return fatMean;
+        }),d3.max(cleanedData, function(d){
+            if(d.FATALITIES != null){
+                return d.FATALITIES;
+            }
+            return fatMean;
+        })]);
+
+
+        // Find short notes to display
         var i = 0;
         while(notes.length < timelapse_totaltime/notesDelay && i < cleanedData.length){
 
@@ -149,17 +174,21 @@ function readData(){
             }
             i += 1;
         }
+
+        // Convert data to this format for display on map
         cleanedData.forEach(function(d){
             if(d.LATITUDE != null && d.LONGITUDE != null){
                 cleanedDataFeatures.push({
                         "type": "Feature",
                         "properties": {"country": d.COUNTRY,
                         "date": d.EVENT_DATE,
-                        "conflict_type": d.EVENT_TYPE,
-                        "notes": d.NOTES
+                        "conflict_type": d.EVENT_TYPE.trim().toLowerCase(),
+                        "notes": d.NOTES,
+                        "fatalities": d.FATALITIES
                     },
-                        "geometry": {"type": "Point",
-                                "coordinates": [d.LONGITUDE, d.LATITUDE]
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [d.LONGITUDE, d.LATITUDE]
                                 }
                     });
             }
@@ -167,12 +196,13 @@ function readData(){
         });
 
         featureCollection = convertToFeatures(cleanedDataFeatures);
-        console.log(featureCollection);
-
     });
 }
+
+// Read in data
 readData();
 
+// Takes in array of features and converts to this format
 function convertToFeatures(features){
     return {"type": "FeatureCollection", "features": features};
 }
@@ -182,6 +212,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+// Calculate the delay for each circle
 function calculateDelay(date){
     var t = (date.getMonth() * (timelapse_totaltime/12) + date.getDate() * ((timelapse_totaltime/12)/30))*1000;
     return t;
@@ -194,6 +225,7 @@ function stop(){
     clearInterval(noteInterval);
     clearInterval(dayInterval);
 }
+
 // Play timelapse
 function addlocations(){
 
@@ -201,11 +233,20 @@ function addlocations(){
     svg2.selectAll("text.notes").remove();
 
     // Filter depending on user selection
-
+    var filterCriteria = [];
+    $("#checkbox_countries :checked").each(function(){
+        filterCriteria.push($(this).val());
+    });
+    $("#checkbox_conflicts :checked").each(function(){
+        filterCriteria.push($(this).val());
+    });
     var filteredCities = convertToFeatures(
-        cleanedDataFeatures.filter(function(d){return d.properties.date.getMonth() < 5;})
+        cleanedDataFeatures.filter(function(d){
+            return filterCriteria.indexOf(d.properties.conflict_type) != -1 || filterCriteria.indexOf(d.properties.country) != -1;
+        })
     );
 
+    fatalitiesScale.range([15, 100]);
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
@@ -227,7 +268,9 @@ function addlocations(){
             .attr("r", 1)
             .transition()
             .style("opacity",0.0)
-            .attr("r", 20)
+            .attr("r", function(d){
+                return fatalitiesScale(d.properties.fatalities);
+            })
             .duration(1500)
             .transition()
             .style("opacity", 0.7)
@@ -308,6 +351,7 @@ function slideUpdateTimelapse(month){
         })
     );
 
+    fatalitiesScale.range([3,70]);
     // Add circles
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
@@ -318,7 +362,9 @@ function slideUpdateTimelapse(month){
         })
         .style("opacity", 0.4)
         .attr("class", "points")
-        .attr("r", 3)
+        .attr("r", function(d){
+            return fatalitiesScale(d.properties.fatalities);
+        })
         ;
 
 
