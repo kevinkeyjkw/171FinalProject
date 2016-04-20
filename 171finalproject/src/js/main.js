@@ -226,6 +226,7 @@ function stop(){
     g.selectAll("circle").remove();
     clearInterval(noteInterval);
     clearInterval(dayInterval);
+    $("#day").html("");
 }
 
 
@@ -378,7 +379,7 @@ console.log(filterCheckboxes().filter(function(d){
         })
     );
 
-    fatalitiesScale.range([3,70]);
+    fatalitiesScale.range([2,70]);
     // Add circles
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
