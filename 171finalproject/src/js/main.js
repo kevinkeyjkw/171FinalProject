@@ -10,6 +10,8 @@ months.forEach(function(d, idx){
 var dayInterval, secondsPassed = 0, dayNumber = 0;
 var notes = [], notesDelay = 7, noteInterval, notesPassed;
 var noteFadeIn = 3, noteFadeOut = notesDelay - noteFadeIn;
+var filterCountryCriteria = [];
+var filterConflictCriteria = [];
 
 var cities={"type": "FeatureCollection", "features": [
 
@@ -226,27 +228,45 @@ function stop(){
     clearInterval(dayInterval);
 }
 
+
+
+function filterCheckboxes(){
+    filterCountryCriteria = [];
+    filterConflictCriteria = [];
+    // Push user criteria into one array
+    $("#checkbox_countries :checked").each(function(){
+        filterCountryCriteria.push($(this).val());
+    });
+    $("#checkbox_conflicts :checked").each(function(){
+        filterConflictCriteria.push($(this).val());
+    });
+
+    return (filterCountryCriteria.length == 0) ?
+        (filterConflictCriteria.length == 0 ? cleanedDataFeatures: cleanedDataFeatures.filter(function(d){
+            return filterConflictCriteria.indexOf(d.properties.conflict_type) != -1;
+        }))
+        : filterConflictCriteria.length== 0 ? (cleanedDataFeatures.filter(function(d){
+        return filterCountryCriteria.indexOf(d.properties.country) != -1;
+    })):cleanedDataFeatures.filter(function(d){
+        return filterCountryCriteria.indexOf(d.properties.country) != -1 && filterConflictCriteria.indexOf(d.properties.conflict_type) != -1;
+    });
+}
+
+//$("input[type=checkbox]").change(function(){
+//       slideUpdateTimelapse($("#slider").slider("option", "value"));
+//});
+
 // Play timelapse
 function addlocations(){
 
     g.selectAll("circle").remove();
     svg2.selectAll("text.notes").remove();
 
-    // Push user criteria into one array
-    var filterCriteria = [];
-    $("#checkbox_countries :checked").each(function(){
-        filterCriteria.push($(this).val());
-    });
-    $("#checkbox_conflicts :checked").each(function(){
-        filterCriteria.push($(this).val());
-    });
 
     // Don't filter if no criteria was set
     var filteredCities = convertToFeatures(
         // Filter depending on user selection
-        (filterCriteria.length == 0) ? cleanedDataFeatures: cleanedDataFeatures.filter(function(d){
-            return filterCriteria.indexOf(d.properties.conflict_type) != -1 || filterCriteria.indexOf(d.properties.country) != -1;
-        })
+        filterCheckboxes()
     );
 
     // Scale used for radius of circle
@@ -348,9 +368,12 @@ function slideUpdateTimelapse(month){
     clearInterval(noteInterval);
 
 
+console.log(filterCheckboxes().filter(function(d){
+    return d.properties.date.getMonth()+1 == month;
+}));
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
-        cleanedDataFeatures.filter(function(d){
+        filterCheckboxes().filter(function(d){
             return d.properties.date.getMonth()+1 == month;
         })
     );
@@ -396,6 +419,7 @@ function slideUpdateTimelapse(month){
             });
     }
 }
+
 
 
 $("#slider").slider({
