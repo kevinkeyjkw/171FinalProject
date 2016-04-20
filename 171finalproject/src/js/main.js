@@ -232,7 +232,7 @@ function addlocations(){
     g.selectAll("circle").remove();
     svg2.selectAll("text.notes").remove();
 
-    // Filter depending on user selection
+    // Push user criteria into one array
     var filterCriteria = [];
     $("#checkbox_countries :checked").each(function(){
         filterCriteria.push($(this).val());
@@ -240,21 +240,25 @@ function addlocations(){
     $("#checkbox_conflicts :checked").each(function(){
         filterCriteria.push($(this).val());
     });
+
+    // Don't filter if no criteria was set
     var filteredCities = convertToFeatures(
-        cleanedDataFeatures.filter(function(d){
+        // Filter depending on user selection
+        (filterCriteria.length == 0) ? cleanedDataFeatures: cleanedDataFeatures.filter(function(d){
             return filterCriteria.indexOf(d.properties.conflict_type) != -1 || filterCriteria.indexOf(d.properties.country) != -1;
         })
     );
 
+    // Scale used for radius of circle
     fatalitiesScale.range([15, 100]);
+
+    // Add circles
     var locations = g.selectAll("circle")
         .data(filteredCities.features)
         .enter()
         .append("circle")
         .style("opacity", 0.0)
         .attr("fill", "transparent");
-
-
         locations.transition()
             .delay(function (d) {
                 //return speed*d.properties.t;

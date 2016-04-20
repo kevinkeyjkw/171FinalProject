@@ -38,10 +38,10 @@
         <entry file="file://$PROJECT_DIR$/src/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.767184">
-              <caret line="245" column="10" selection-start-line="245" selection-start-column="10" selection-end-line="245" selection-end-column="10" />
+              <caret line="260" column="37" selection-start-line="260" selection-start-column="37" selection-end-line="260" selection-end-column="37" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1461114176000" expanded="true" signature="4452:4463" placeholder="..." />
+                <marker date="1461114651000" expanded="true" signature="4452:4463" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -325,7 +325,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1461114176000" expanded="true" signature="4452:4463" placeholder="..." />
+            <marker date="1461114651000" expanded="true" signature="4452:4463" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -365,7 +365,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1461114176000" expanded="true" signature="4452:4463" placeholder="..." />
+            <marker date="1461114651000" expanded="true" signature="4452:4463" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -410,10 +410,10 @@
     <entry file="file://$PROJECT_DIR$/src/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.767184">
-          <caret line="245" column="10" selection-start-line="245" selection-start-column="10" selection-end-line="245" selection-end-column="10" />
+          <caret line="260" column="37" selection-start-line="260" selection-start-column="37" selection-end-line="260" selection-end-column="37" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1461114176000" expanded="true" signature="4452:4463" placeholder="..." />
+            <marker date="1461114651000" expanded="true" signature="4452:4463" placeholder="..." />
           </folding>
         </state>
       </provider>
