@@ -29,7 +29,7 @@ Timeline = function(_parentElement, _data){
 
 Timeline.prototype.initVis = function(){
     var vis = this; // read about the this
-
+    var extraWidth = 50, extraHeight = 50;
     vis.margin = {top: 0, right: 0, bottom: 30, left: 60};
 
     vis.width = 800 - vis.margin.left - vis.margin.right,
@@ -37,21 +37,26 @@ Timeline.prototype.initVis = function(){
     vis.keysToDates = Object.keys(vis.displayData).map(function(d){return new Date(+d);});
     // SVG drawing area
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .attr("width", vis.width + vis.margin.left + vis.margin.right+extraWidth)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom+extraHeight)
         .append("g")
-        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
+        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
+        .attr("width", vis.width + vis.margin.left + vis.margin.right-200)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
+
+
+    vis.dateFormat = d3.time.format("%Y-%m-%d");
     // Scales and axes
     vis.x = d3.time.scale()
-        .range([0, vis.width])
+        .range([0, vis.width-extraWidth])
         .domain(d3.extent(vis.keysToDates));
 
     console.log(vis.x.domain(), vis.x.range());
 
 
     vis.y = d3.scale.linear()
-        .range([vis.height, 0])
+        .range([vis.height, extraHeight])
         .domain([0,d3.max(Object.keys(vis.displayData), function(d){
             return vis.displayData[d];
         })]);
@@ -101,11 +106,14 @@ Timeline.prototype.initVis = function(){
         .datum(Object.keys(vis.displayData))
         .attr("fill", "#b21018")
         .attr("d", vis.area)
+        //.attr("width", 300)
         .style("pointer-events", "fill")
         .on("mouseover", function(){
             vis.focus.style("display", null);
+            vis.focusText.style("display", null);
         }).on("mouseout", function(){
             vis.focus.style("display", "none");
+            vis.focusText.style("display", "none");
         }).on("mousemove", mousemove)
         .on('mousedown', function(){
             brush_elm = vis.svg.select(".brush").node();
@@ -121,13 +129,27 @@ Timeline.prototype.initVis = function(){
     vis.svg.append("g")
         .attr("class", "x-axis axis")
         .attr("transform", "translate(0," + vis.height + ")")
+        .attr("width", vis.width+100)
         .call(vis.xAxis);
         //.call(vis.yAxis);
+
+    // separate svg for hover text b/c it exits timeline svg some times
 
     // append circle on mouse hover
     vis.focus = vis.svg.append("g")
         .style("display", "none")
         .attr("class", "focus");
+
+    vis.focusText = vis.svg.append("g")
+        .style("display", "none")
+        .attr("class", "focus");
+    //vis.focusText = d3.select("#" + vis.parentElement).append("svg")
+    //    .attr("width", vis.width+200 + vis.margin.left + vis.margin.right)
+    //    .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+    //    .append("g")
+    //    .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
+    //    .style("display", "none")
+    //    .attr("class", "focus");
 
     vis.focus.append("circle")
         .attr("class", "y")
@@ -135,7 +157,14 @@ Timeline.prototype.initVis = function(){
         .style("stroke", "#0a0840")
         .attr("r", 2);
 
-    // append rectangle to capture mouse
+    // hairline follows mouse
+    vis.focus.append("line")
+        .attr("class", "x")
+        .style("stroke", "black")
+        .attr("y1", 0)
+        .attr("y2", vis.height);
+
+    // append rectangle to capture mouse hover
     vis.svg.append("rect")
         .attr("width", vis.width)
         .attr("height", vis.height)
@@ -146,6 +175,38 @@ Timeline.prototype.initVis = function(){
         //}).on("mouseout", function(){
         //    vis.focus.style("display", "none");
         //}).on("mousemove", mousemove);
+
+    /* Fatalities Text */
+    vis.focusText.append("text")
+        .attr("class", "y1")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .style("font-weight", "bold")
+        .style("z-index", 100)
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+    vis.focusText.append("text")
+        .attr("class", "y2")
+        .style("font-weight", "bold")
+        .style("z-index", 100)
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+
+    /* Date Text */
+    vis.focusText.append("text")
+        .attr("class", "y3")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "1em");
+    vis.focusText.append("text")
+        .attr("class", "y4")
+        .attr("dx", 8)
+        .attr("dy", "1em")
+        .style("fill", "black");
+
 
 
     vis.bisectDate = d3.bisector(function(d) { return d; }).left;
@@ -158,9 +219,35 @@ Timeline.prototype.initVis = function(){
             d = x0 - d0 > d1 - x0 ? d1: d0;
         console.log(vis.x(d),vis.y(vis.displayData[d.getTime().toString()]),d.getTime().toString(),vis.displayData[d.getTime().toString()]);
 
+        // move circle, hairline to mouse's position
         vis.focus.select("circle.y")
             .attr("transform",
             "translate("+vis.x(d)+","+vis.y(vis.displayData[d.getTime().toString()])+")");
+
+        vis.focus.select("line.x")
+            .attr("transform",
+            "translate("+vis.x(d)+",0)")
+            .attr("y1", vis.y(vis.displayData[d.getTime().toString()]));
+
+        /* Fatalities */
+        vis.focusText.select("text.y1")
+            .attr("transform", "translate(" + vis.x(d) + "," +
+                vis.y(vis.displayData[d.getTime().toString()]) + ")")
+            .text(vis.displayData[d.getTime().toString()]+ " Fatalities");
+        vis.focusText.select("text.y2")
+            .attr("transform", "translate(" + vis.x(d) + "," +
+                vis.y(vis.displayData[d.getTime().toString()]) + ")")
+            .text(vis.displayData[d.getTime().toString()]+ " Fatalities");
+
+        // Date text
+        vis.focusText.select("text.y3")
+            .attr("transform", "translate(" + vis.x(d) + "," +
+                vis.y(vis.displayData[d.getTime().toString()]) + ")")
+            .text(vis.dateFormat(d));
+        vis.focusText.select("text.y4")
+            .attr("transform", "translate(" + vis.x(d) + "," +
+                vis.y(vis.displayData[d.getTime().toString()]) + ")")
+            .text(vis.dateFormat(d));
 
     }
 }
