@@ -112,7 +112,7 @@ textarea {
 }
 
 #timelapse-opt-riot{
-    margin-top: -110px;
+    margin-top: -70px;
 }
 
 .control {
@@ -190,6 +190,24 @@ div.tooltip {
     margin-right: 8px;
     opacity: 0.4;
 }
+.squared {
+    padding: 1px 8px 1px 8px;
+}
+
+.hoverStartLegend{
+    padding: 4px 15px 4px 8px;
+    background-color: black;
+}
+.selectedLegend{
+    padding: 4px 15px 4px 8px;
+    /*background-color: black;*/
+}
+
+
+#legend {
+    text-align: left;
+}
+
 .brush .extent {
     stroke: #fff;
     fill-opacity: .125;
@@ -202,9 +220,7 @@ div.tooltip {
     shape-rendering: crispEdges;
 }
 
-.legend {
-    text-align: left;
-}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -212,6 +228,8 @@ div.tooltip {
 /*
  * Hide visually and from screen readers
  */
+
+
 
 .hidden {
     display: none !important;

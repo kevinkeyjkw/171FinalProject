@@ -131,26 +131,43 @@ function readData(){
             "orange", "green", "#0000A6", "#1CE6FF"]);
 
         // Legend for map
-        legend.onAdd = function(map){
-            var div = L.DomUtil.create('div', 'info legend'),
-                labels = [];
+        //legend.onAdd = function(map){
+        //    var div = L.DomUtil.create('div', 'info legend'),
+        //        labels = [];
+        //
+        //    // loop through our density intervals and generate a label with a colored square for each interval
+        //    for (var i = 0; i < conflictTypes.length; i++) {
+        //        div.innerHTML +=
+        //            '<i style="background:' + c20(conflictTypes[i]) +
+        //            '" class="legendButton" value="'+conflictTypes[i]+'"></i> ' +
+        //            conflictTypes[i] + '<br>';
+        //    }
+        //
+        //    return div;
+        //};
+        //legend.addTo(map);
 
-            // loop through our density intervals and generate a label with a colored square for each interval
-            for (var i = 0; i < conflictTypes.length; i++) {
-                div.innerHTML +=
-                    '<i style="background:' + c20(conflictTypes[i]) +
-                    '" class="legendButton" value="'+conflictTypes[i]+'"></i> ' +
-                    conflictTypes[i] + '<br>';
-            }
-
-            return div;
-        };
-        legend.addTo(map);
+        // Add legend to right panel
+        for(var i=0;i<conflictTypes.length;i++){
+            $("#legend").append("<div class='legendButton'><span class='squared' style='background:" +
+                c20(conflictTypes[i]) + "'></span><span style='padding: 0px  0px 0px 10px;'>" + conflictTypes[i]
+                + "</span></div>");
+        }
 
 
         $('body').on('click', '.legendButton', function(){
-           console.log(this);
+            console.log("Legend!");
+            $(this).find(">:first-child").toggleClass("selectedLegend");
         });
+        $('body').on('mouseenter', '.legendButton', function(){
+            console.log(this);
+            $(this).find(">:first-child").toggleClass("hoverStartLegend");
+            //this.toggleClass("hoverStartLegend");
+        }).on('mouseleave', '.legendButton', function(){
+            console.log("hover end");
+            $(this).find(">:first-child").toggleClass("hoverStartLegend");
+            //this.toggleClass("hoverEndLegend");
+        })
 
 
         cleanedData = allData;
@@ -253,6 +270,7 @@ function stop(){
     timeline.ticker.select("line.tickerline").transition();
     timeline.ticker.select("line.tickerline").remove();
     $("#day").html("");
+    $("#note").html("");
 }
 
 
@@ -283,9 +301,8 @@ function filterCheckboxes(){
 // Play timelapse
 function addlocations(filteredCities, startDate){
     // Remove current circles and notes
-    g.selectAll("circle").remove();
-    svg2.selectAll("text.notes").remove();
-
+    //g.selectAll("circle").remove();
+    stop();
     // Don't filter if no criteria was set
     //var filteredCities = convertToFeatures(
     //    // Filter depending on user selection
@@ -344,7 +361,7 @@ function addlocations(filteredCities, startDate){
             clearInterval(noteInterval);
             return;
         }
-        $("#day").html(dayNumber);
+        $("#day").html('Day '+dayNumber);
         dayNumber += 1;
     }, dayDelay * 1000);
 

@@ -115,6 +115,7 @@ Timeline.prototype.initVis = function(){
             vis.focus.style("display", "none");
             vis.focusText.style("display", "none");
         }).on("mousemove", mousemove)
+        .on("click",mouseclick)
         .on('mousedown', function(){
             brush_elm = vis.svg.select(".brush").node();
             new_click_event = new Event('mousedown');
@@ -124,7 +125,7 @@ Timeline.prototype.initVis = function(){
             new_click_event.clientY = d3.event.clientY;
             brush_elm.dispatchEvent(new_click_event);
         })
-        .on("click",mouseclick);
+        ;
 
     // append axis
     vis.svg.append("g")
