@@ -313,34 +313,28 @@ function addlocations(filteredCities, startDate){
             .duration(0)
             ;
 
-
-    secondsPassed = 0;
-    dayNumber = startDate.getMonth()*30 + startDate.getDate();
-
-    // Display running day count
-    dayInterval = window.setInterval(function(){
-        if(dayNumber > 365){
-            clearInterval(dayInterval);
-            return;
-        }
-       $("#day").html(dayNumber);
-        dayNumber += 1;
-    }, dayDelay * 1000);
-
     // Running notes at intervals
     notesPassed = 0;
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
     noteInterval = window.setInterval(function(){
-
-        if(notesPassed > notes.length){
-            clearInterval(noteInterval);
-            return;
-        }
         notesPassed += 1;
         $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
         $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
     }, notesDelay * 1000);
+
+    // Display running day count
+    secondsPassed = 0;
+    dayNumber = startDate.getMonth()*30 + startDate.getDate();
+    dayInterval = window.setInterval(function(){
+        if(dayNumber > 365){
+            clearInterval(dayInterval);
+            clearInterval(noteInterval);
+            return;
+        }
+        $("#day").html(dayNumber);
+        dayNumber += 1;
+    }, dayDelay * 1000);
 
     reset();
     map.on("viewreset", reset);
