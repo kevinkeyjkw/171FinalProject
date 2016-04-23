@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14afca8b-dd87-4e37-ad3a-b19f26cfa569" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/css/main.css" afterPath="$PROJECT_DIR$/171finalproject/src/css/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/index.html" afterPath="$PROJECT_DIR$/171finalproject/src/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/main.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
     </list>
     <ignored path="finalproject.iws" />
@@ -26,21 +29,21 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.814815">
-              <caret line="449" column="17" selection-start-line="449" selection-start-column="17" selection-end-line="449" selection-end-column="17" />
+            <state vertical-scroll-proportion="-5.5555553">
+              <caret line="238" column="22" selection-start-line="238" selection-start-column="18" selection-end-line="238" selection-end-column="22" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1461377675000" expanded="true" signature="4183:4194" placeholder="..." />
+                <marker date="1461441681000" expanded="true" signature="4392:4403" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34922394">
-              <caret line="94" column="52" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="52" />
+            <state vertical-scroll-proportion="-8.611111">
+              <caret line="216" column="37" selection-start-line="216" selection-start-column="37" selection-end-line="216" selection-end-column="37" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -51,8 +54,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.397436">
-              <caret line="124" column="27" selection-start-line="124" selection-start-column="27" selection-end-line="124" selection-end-column="27" />
+            <state vertical-scroll-proportion="-6.820513">
+              <caret line="152" column="51" selection-start-line="152" selection-start-column="33" selection-end-line="152" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#span#1;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -60,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.5897436">
-              <caret line="189" column="17" selection-start-line="189" selection-start-column="17" selection-end-line="189" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.5888383">
+              <caret line="138" column="16" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -86,9 +89,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/171finalproject/src/index.html" />
+        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
         <option value="$PROJECT_DIR$/171finalproject/src/js/main.js" />
         <option value="$PROJECT_DIR$/171finalproject/src/css/main.css" />
-        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
       </list>
     </option>
   </component>
@@ -100,7 +103,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="1449" />
     <option name="y" value="23" />
-    <option name="width" value="1009" />
+    <option name="width" value="1143" />
     <option name="height" value="1053" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -301,10 +304,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1449" y="23" width="1009" height="1053" extended-state="0" />
+    <frame x="1449" y="23" width="1143" height="1053" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24777007" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21872266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -338,29 +341,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5897436">
-          <caret line="189" column="17" selection-start-line="189" selection-start-column="17" selection-end-line="189" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.814815">
-          <caret line="449" column="17" selection-start-line="449" selection-start-column="17" selection-end-line="449" selection-end-column="17" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <marker date="1461377675000" expanded="true" signature="4183:4194" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.397436">
-          <caret line="124" column="27" selection-start-line="124" selection-start-column="27" selection-end-line="124" selection-end-column="27" />
+        <state vertical-scroll-proportion="-6.820513">
+          <caret line="152" column="51" selection-start-line="152" selection-start-column="33" selection-end-line="152" selection-end-column="51" />
           <folding>
             <element signature="n#style#0;n#span#1;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
@@ -369,11 +353,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34922394">
-          <caret line="94" column="52" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="52" />
+        <state vertical-scroll-proportion="-8.611111">
+          <caret line="216" column="37" selection-start-line="216" selection-start-column="37" selection-end-line="216" selection-end-column="37" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.5555553">
+          <caret line="238" column="22" selection-start-line="238" selection-start-column="18" selection-end-line="238" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1461441681000" expanded="true" signature="4392:4403" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5888383">
+          <caret line="138" column="16" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>

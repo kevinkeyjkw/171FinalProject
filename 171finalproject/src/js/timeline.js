@@ -29,10 +29,10 @@ Timeline = function(_parentElement, _data){
 
 Timeline.prototype.initVis = function(){
     var vis = this; // read about the this
-    var extraWidth = 50, extraHeight = 50;
+    var extraWidth = 50, extraHeight = 15;
     vis.margin = {top: 0, right: 0, bottom: 30, left: 60};
 
-    vis.width = 800 - vis.margin.left - vis.margin.right,
+    vis.width = 900 - vis.margin.left - vis.margin.right,
         vis.height = 200 - vis.margin.top - vis.margin.bottom;
     vis.keysToDates = Object.keys(vis.displayData).map(function(d){return new Date(+d);});
     // SVG drawing area
@@ -45,14 +45,14 @@ Timeline.prototype.initVis = function(){
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
 
-
+    vis.timelineWidth = vis.width - extraWidth;
     vis.dateFormat = d3.time.format("%Y-%m-%d");
     // Scales and axes
     vis.x = d3.time.scale()
-        .range([0, vis.width-extraWidth])
+        .range([0, vis.timelineWidth])
         .domain(d3.extent(vis.keysToDates));
 
-    console.log(vis.x.domain(), vis.x.range());
+    //console.log(vis.x.domain(), vis.x.range());
 
 
     vis.y = d3.scale.linear()
@@ -62,7 +62,7 @@ Timeline.prototype.initVis = function(){
         })]);
 
 
-    console.log(vis.y.domain(), vis.y.range());
+    //console.log(vis.y.domain(), vis.y.range());
         //.domain([0, d3.max(vis.displayData, function(d) { return d.FATALITIES; })]);
 
     vis.yAxis = d3.svg.axis()
@@ -123,7 +123,8 @@ Timeline.prototype.initVis = function(){
             new_click_event.pageY = d3.event.pageY;
             new_click_event.clientY = d3.event.clientY;
             brush_elm.dispatchEvent(new_click_event);
-        });
+        })
+        .on("click",mouseclick);
 
     // append axis
     vis.svg.append("g")
@@ -133,8 +134,6 @@ Timeline.prototype.initVis = function(){
         .call(vis.xAxis);
         //.call(vis.yAxis);
 
-    // separate svg for hover text b/c it exits timeline svg some times
-
     // append circle on mouse hover
     vis.focus = vis.svg.append("g")
         .style("display", "none")
@@ -143,13 +142,11 @@ Timeline.prototype.initVis = function(){
     vis.focusText = vis.svg.append("g")
         .style("display", "none")
         .attr("class", "focus");
-    //vis.focusText = d3.select("#" + vis.parentElement).append("svg")
-    //    .attr("width", vis.width+200 + vis.margin.left + vis.margin.right)
-    //    .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-    //    .append("g")
-    //    .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
-    //    .style("display", "none")
-    //    .attr("class", "focus");
+
+    // group element for timeline ticker
+    vis.ticker = vis.svg.append("g")
+        .style("display", "none")
+        .attr("class", "ticker");
 
     vis.focus.append("circle")
         .attr("class", "y")
@@ -169,12 +166,6 @@ Timeline.prototype.initVis = function(){
         .attr("width", vis.width)
         .attr("height", vis.height)
         .style("fill", "none");
-        //.style("pointer-events", "all");
-        //.on("mouseover", function(){
-        //    vis.focus.style("display", null);
-        //}).on("mouseout", function(){
-        //    vis.focus.style("display", "none");
-        //}).on("mousemove", mousemove);
 
     /* Fatalities Text */
     vis.focusText.append("text")
@@ -210,6 +201,46 @@ Timeline.prototype.initVis = function(){
 
 
     vis.bisectDate = d3.bisector(function(d) { return d; }).left;
+
+    function mouseclick(){
+        var x0 = vis.x.invert(d3.mouse(this)[0]),
+            i = vis.bisectDate(vis.keysToDates, x0);
+        var d0 = vis.keysToDates[i-1],
+            d1 = vis.keysToDates[i],
+            d = x0 - d0 > d1 - x0 ? d1: d0;
+
+        // Play time lapse starting from d
+        // Filter
+        var filteredCities = convertToFeatures(
+            // Filter depending on user selection
+            cleanedDataFeatures.filter(function(x) {
+                return x.properties.date > d;
+            }));
+        // Time lapse on map
+        addlocations(filteredCities, d);
+
+        // Move a black vertical line along timeline
+        //vis.ticker.style("display", "none");
+        vis.ticker.select("line.tickerline").transition();
+        vis.ticker.select("line.tickerline").remove();
+        // ticker for timeline
+        vis.ticker.append("line")
+            .attr("class", "tickerline")
+            .style("stroke", "black")
+            .attr("y1", 0)
+            .attr("y2", vis.height);
+
+        vis.ticker.style("display", null);
+        vis.ticker.select("line.tickerline")
+            .attr("transform",
+            "translate(" + vis.x(d) + ",0)")
+            .transition().duration((365 - d.getMonth()*30 - d.getDate()) * dayDelay * 1000)
+            .ease("linear")
+            .attr("transform",
+            "translate(" + vis.timelineWidth + ",0)");
+
+    }
+
     function mousemove(){
         var x0 = vis.x.invert(d3.mouse(this)[0]),
             i = vis.bisectDate(vis.keysToDates, x0);
@@ -217,7 +248,7 @@ Timeline.prototype.initVis = function(){
             var d0 = vis.keysToDates[i-1],
             d1 = vis.keysToDates[i],
             d = x0 - d0 > d1 - x0 ? d1: d0;
-        console.log(vis.x(d),vis.y(vis.displayData[d.getTime().toString()]),d.getTime().toString(),vis.displayData[d.getTime().toString()]);
+        //console.log(vis.x(d),vis.y(vis.displayData[d.getTime().toString()]),d.getTime().toString(),vis.displayData[d.getTime().toString()]);
 
         // move circle, hairline to mouse's position
         vis.focus.select("circle.y")

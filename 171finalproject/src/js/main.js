@@ -29,7 +29,8 @@ var time_lkup=[
 ];
 
 var speed=800;
-var timelapse_totaltime = 120;
+var timelapse_totaltime = 90;
+var dayDelay = timelapse_totaltime/365.0;
 
 function projectPoint(x, y) {
     var point = map.latLngToLayerPoint(new L.LatLng(y, x));
@@ -98,7 +99,8 @@ var cleanedData;
 var cleanedDataFeatures = [];
 var featureCollection;
 var conflictTypes = [];
-var c20 = d3.scale.category10();
+//var c20 = d3.scale.category10();
+var c20 = d3.scale.ordinal();
 var fatalitiesScale = d3.scale.linear();
 
 var dayConflictDict = {};
@@ -119,6 +121,8 @@ function readData(){
             }
         });
 
+        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "red", "#FF34FF",
+            "orange", "green", "#0000A6", "#1CE6FF"]);
 
         // Legend for map
         legend.onAdd = function(map){
@@ -221,8 +225,10 @@ var tooltip = d3.select("body").append("div")
     .style("opacity", 0);
 
 // Calculate the delay for each circle
-function calculateDelay(date){
-    var t = (date.getMonth() * (timelapse_totaltime/12) + date.getDate() * ((timelapse_totaltime/12)/30))*1000;
+function calculateDelay(date, startDate){
+    var daysSinceStart = (date.getMonth() - startDate.getMonth())*30 - startDate.getDate() + date.getDate();
+    //var t = (date.getMonth() * (timelapse_totaltime/12) + date.getDate() * ((timelapse_totaltime/12)/30))*1000;
+    var t = daysSinceStart * dayDelay * 1000;
     return t;
 }
 
@@ -232,6 +238,8 @@ function stop(){
     g.selectAll("circle").remove();
     clearInterval(noteInterval);
     clearInterval(dayInterval);
+    timeline.ticker.select("line.tickerline").transition();
+    timeline.ticker.select("line.tickerline").remove();
     $("#day").html("");
 }
 
@@ -261,16 +269,16 @@ function filterCheckboxes(){
 
 
 // Play timelapse
-function addlocations(){
+function addlocations(filteredCities, startDate){
     // Remove current circles and notes
     g.selectAll("circle").remove();
     svg2.selectAll("text.notes").remove();
 
     // Don't filter if no criteria was set
-    var filteredCities = convertToFeatures(
-        // Filter depending on user selection
-        filterCheckboxes()
-    );
+    //var filteredCities = convertToFeatures(
+    //    // Filter depending on user selection
+    //    filterCheckboxes()
+    //);
 
     // Scale used for radius of circle
     fatalitiesScale.range([15, 100]);
@@ -285,7 +293,7 @@ function addlocations(){
         locations.transition()
             .delay(function (d) {
                 //return speed*d.properties.t;
-                return calculateDelay(d.properties.date);
+                return calculateDelay(d.properties.date, startDate);
             })
             .attr("fill", function(d){
                 return c20(d.properties.conflict_type);
@@ -307,17 +315,17 @@ function addlocations(){
 
 
     secondsPassed = 0;
-    dayNumber = 0;
+    dayNumber = startDate.getMonth()*30 + startDate.getDate();
+
     // Display running day count
     dayInterval = window.setInterval(function(){
-        secondsPassed += timelapse_totaltime/366;
-        dayNumber += 1;
-        if(secondsPassed > timelapse_totaltime){
+        if(dayNumber > 365){
             clearInterval(dayInterval);
             return;
         }
        $("#day").html(dayNumber);
-    }, (timelapse_totaltime/366) * 1000);
+        dayNumber += 1;
+    }, dayDelay * 1000);
 
     // Running notes at intervals
     notesPassed = 0;
@@ -471,5 +479,5 @@ function brushed() {
     //    timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent()
     //);
     //areachart.wrangleData();
-    console.log(timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent());
+    //console.log(timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent());
 }

@@ -106,9 +106,13 @@ textarea {
     margin:5px 10%;
     border:2px solid #000;
     border-radius: 5px;
-    height:710px;
+    height:450px;
     overflow:hidden;
     background: #F0F8FF;
+}
+
+#timelapse-opt-riot{
+    margin-top: -140px;
 }
 
 .control {
@@ -122,7 +126,7 @@ textarea {
     height:40px;
     display:none;
     margin-left: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding-left: 70px;
     text-align: center;
     font-size: 20px;
@@ -132,7 +136,7 @@ textarea {
 
 .day {
     color: black;
-    font-size: 40px;
+    font-size: 30px;
     left: 0;
     font-family: "Courier New";
 }
