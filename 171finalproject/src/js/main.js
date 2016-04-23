@@ -12,6 +12,7 @@ var notes = [], notesDelay = 7, noteInterval, notesPassed;
 var noteFadeIn = 3, noteFadeOut = notesDelay - noteFadeIn;
 var filterCountryCriteria = [];
 var filterConflictCriteria = [];
+var timeline;
 
 var cities={"type": "FeatureCollection", "features": [
 
@@ -63,13 +64,10 @@ map.on('click', function() {
     map.scrollWheelZoom.enable();
 });
 
-//map.once('focus', function() { map.scrollWheelZoom.enable(); });
-//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-//    {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
-
 L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
 // Markers
 var markers;
 var latitude = 1;
@@ -81,7 +79,6 @@ var svg = d3.select(map.getPanes().overlayPane).append("svg");
 var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
 var legend = L.control({position: 'topright'});
-
 
 var transform = d3.geo.transform({point: projectPoint});
 var d3path = d3.geo.path().projection(transform);
@@ -95,22 +92,16 @@ var svg3 = d3.select("#day").append("svg")
     .attr("height", 50)
     .attr("width", 50);
 
-
-
-//var time = svg2.append("text")
-//    .attr("x", 10)
-//    .attr("y", 20)
-//    .attr("class", "time")
-//    .style("font-size", "20px");
-
 var dateFormat = d3.time.format("%d-%B-%Y");
 
 var cleanedData;
 var cleanedDataFeatures = [];
 var featureCollection;
 var conflictTypes = [];
-var c20 = d3.scale.category20();
+var c20 = d3.scale.category10();
 var fatalitiesScale = d3.scale.linear();
+
+var dayConflictDict = {};
 
 function readData(){
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
@@ -127,6 +118,7 @@ function readData(){
                 conflictTypes.push(d.EVENT_TYPE.trim().toLowerCase());
             }
         });
+
 
         // Legend for map
         legend.onAdd = function(map){
@@ -145,6 +137,20 @@ function readData(){
         legend.addTo(map);
 
         cleanedData = allData;
+        console.log('cleaned data');
+        console.log(cleanedData);
+        // Create timeline
+        // {Date(): numFatalities, etc}
+        cleanedData.forEach(function(d){
+            if(d.EVENT_DATE.getTime() in dayConflictDict){
+                dayConflictDict[d.EVENT_DATE.getTime()] += 1;
+            }else{
+                dayConflictDict[d.EVENT_DATE.getTime()] = 1;
+            }
+        });
+        console.log(Object.keys(dayConflictDict).sort());
+        console.log(dayConflictDict);
+        createTimeline(dayConflictDict);
 
         // Mean of fatalities
         var fatMean = d3.mean(cleanedData.map(function(d){return d.FATALITIES;}));
@@ -230,7 +236,7 @@ function stop(){
 }
 
 
-
+// Filter data based on checkboxes
 function filterCheckboxes(){
     filterCountryCriteria = [];
     filterConflictCriteria = [];
@@ -253,16 +259,12 @@ function filterCheckboxes(){
     });
 }
 
-//$("input[type=checkbox]").change(function(){
-//       slideUpdateTimelapse($("#slider").slider("option", "value"));
-//});
 
 // Play timelapse
 function addlocations(){
-
+    // Remove current circles and notes
     g.selectAll("circle").remove();
     svg2.selectAll("text.notes").remove();
-
 
     // Don't filter if no criteria was set
     var filteredCities = convertToFeatures(
@@ -306,6 +308,7 @@ function addlocations(){
 
     secondsPassed = 0;
     dayNumber = 0;
+    // Display running day count
     dayInterval = window.setInterval(function(){
         secondsPassed += timelapse_totaltime/366;
         dayNumber += 1;
@@ -316,8 +319,7 @@ function addlocations(){
        $("#day").html(dayNumber);
     }, (timelapse_totaltime/366) * 1000);
 
-    $("#blah").html("blah").fadeIn(5000);
-
+    // Running notes at intervals
     notesPassed = 0;
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
@@ -334,7 +336,6 @@ function addlocations(){
 
     reset();
     map.on("viewreset", reset);
-
 
     function reset() {
         var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
@@ -360,6 +361,7 @@ function addlocations(){
 
 }
 
+// Update time lapse with slider
 function slideUpdateTimelapse(month){
     // stop time lapse
     g.selectAll("circle").transition();
@@ -368,10 +370,6 @@ function slideUpdateTimelapse(month){
     clearInterval(dayInterval);
     clearInterval(noteInterval);
 
-
-console.log(filterCheckboxes().filter(function(d){
-    return d.properties.date.getMonth()+1 == month;
-}));
     // Filter depending on user selection
     var filteredCities = convertToFeatures(
         filterCheckboxes().filter(function(d){
@@ -395,8 +393,6 @@ console.log(filterCheckboxes().filter(function(d){
         })
         ;
 
-
-    console.log("conflict type legend",c20.domain(),c20.range());
     reset();
     map.on("viewreset", reset);
 
@@ -464,30 +460,16 @@ $("#slider").slider({
 
     });
 
+function createTimeline(data){
+    timeline = new Timeline("timeline", data);
+};
 
-//var notesText = svg2.selectAll("text.notes")
-//    .data(notes).enter().append('text.notes')
-//    //.attr('width', 800)
-//    //.attr('height', 200)
-//    .append("xhtml:div")
-//    .html(function(d){
-//        return '<div style="width: 800px;font-size: 20px;"><strong>"' + d + '"</strong></div>';
-//    }).style("opacity", 0.0);
-//
-//notesText
-//    .transition()
-//    .delay(function (d, idx) {
-//        console.log(d,idx);
-//        //return speed* d.properties.t;
-//        return idx * notesDelay * 1000;
-//    })
-//    .attr("x", 100)
-//    .attr("y", 12)
-//    //.attr("class", "timer")
-//    .style("opacity", 1.0)
-//    .style("font-family", "Courier New")
-//    .style("color", "black")
-//    .transition()
-//    .duration(notesDelay*800)
-//    .style("opacity", 0.0)
-//    ;
+function brushed() {
+
+    // TO-DO: React to 'brushed' event
+    //areachart.x.domain(
+    //    timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent()
+    //);
+    //areachart.wrangleData();
+    console.log(timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent());
+}

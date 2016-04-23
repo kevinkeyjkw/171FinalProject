@@ -186,8 +186,21 @@ div.tooltip {
     margin-right: 8px;
     opacity: 0.4;
 }
+.brush .extent {
+    stroke: #fff;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
 
-
+.options {
+    text-align: left;
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
