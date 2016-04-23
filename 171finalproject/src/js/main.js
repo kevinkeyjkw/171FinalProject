@@ -65,9 +65,15 @@ map.on('click', function() {
     map.scrollWheelZoom.enable();
 });
 
-L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+//L.tileLayer('http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', {
+//    attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+//}).addTo(map);
+
+var accessToken = 'pk.eyJ1IjoicWlrZXZpbmprdyIsImEiOiJjaW5idXkxZXgwbngzdjhrdnZoNmJseXUxIn0.W629lItHk7qOvhFkqR5vqw';
+var mapType = "qikevinjkw.pon119c5";//qikevinjkw.pon1d56a
+L.tileLayer('https://api.mapbox.com/v4/'+mapType+'/{z}/{x}/{y}.png?access_token=' +
+    accessToken, { attribution: '© <a href="https://www.mapbox.com/map-feedback/">' +
+'Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
 
 // Markers
 var markers;
@@ -132,7 +138,8 @@ function readData(){
             // loop through our density intervals and generate a label with a colored square for each interval
             for (var i = 0; i < conflictTypes.length; i++) {
                 div.innerHTML +=
-                    '<i style="background:' + c20(conflictTypes[i]) + '"></i> ' +
+                    '<i style="background:' + c20(conflictTypes[i]) +
+                    '" class="legendButton" value="'+conflictTypes[i]+'"></i> ' +
                     conflictTypes[i] + '<br>';
             }
 
@@ -140,8 +147,13 @@ function readData(){
         };
         legend.addTo(map);
 
+
+        $('body').on('click', '.legendButton', function(){
+           console.log(this);
+        });
+
+
         cleanedData = allData;
-        console.log('cleaned data');
         console.log(cleanedData);
         // Create timeline
         // {Date(): numFatalities, etc}
