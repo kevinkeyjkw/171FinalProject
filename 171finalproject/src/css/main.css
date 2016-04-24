@@ -111,14 +111,14 @@ textarea {
     background: #F0F8FF;
 }
 
-#timelapse-opt-riot{
-    margin-top: -70px;
+#timeline{
+    margin-top: -90px;
 }
 
 .control {
     border: 2px solid #000;
     border-radius: 5px;
-    padding: 10px;
+    /*padding: 0px 0px -10px 0px;*/
 }
 
 #note{
@@ -191,7 +191,8 @@ div.tooltip {
     opacity: 0.4;
 }
 .squared {
-    padding: 1px 8px 1px 8px;
+    padding-left: 3px;
+    padding-right: 10px;
 }
 
 .hoverStartLegend{
@@ -202,7 +203,9 @@ div.tooltip {
     padding: 4px 15px 4px 8px;
     /*background-color: black;*/
 }
-
+.legendButton{
+    font-size: 14px;
+}
 
 #legend {
     text-align: left;
