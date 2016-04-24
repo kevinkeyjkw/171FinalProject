@@ -80,10 +80,8 @@ Timeline.prototype.initVis = function(){
         .on("brush", brushed);
 
     // TO-DO: Append brush component here
-
     vis.svg.append("g")
         .attr("class", "brush")
-        //.style("pointer-events", "painted")
         .call(vis.brush)
         .selectAll("rect")
         .attr("y", -6)
@@ -100,8 +98,6 @@ Timeline.prototype.initVis = function(){
             return vis.y(vis.displayData[d]);
         });
 
-
-
     vis.svg.append("path")
         .datum(Object.keys(vis.displayData))
         .attr("fill", "#b21018")
@@ -115,8 +111,9 @@ Timeline.prototype.initVis = function(){
             vis.focus.style("display", "none");
             vis.focusText.style("display", "none");
         }).on("mousemove", mousemove)
-        .on("click",mouseclick)
+        .on("click", mouseclick)
         .on('mousedown', function(){
+            console.log("Down!");
             brush_elm = vis.svg.select(".brush").node();
             new_click_event = new Event('mousedown');
             new_click_event.pageX = d3.event.pageX;
@@ -166,7 +163,8 @@ Timeline.prototype.initVis = function(){
     vis.svg.append("rect")
         .attr("width", vis.width)
         .attr("height", vis.height)
-        .style("fill", "none");
+        .style("fill", "none")
+        .on("click", mouseclick);
 
     /* Fatalities Text */
     vis.focusText.append("text")
@@ -204,6 +202,7 @@ Timeline.prototype.initVis = function(){
     vis.bisectDate = d3.bisector(function(d) { return d; }).left;
 
     function mouseclick(){
+        console.log("Click!");
         var x0 = vis.x.invert(d3.mouse(this)[0]),
             i = vis.bisectDate(vis.keysToDates, x0);
         var d0 = vis.keysToDates[i-1],
@@ -211,12 +210,26 @@ Timeline.prototype.initVis = function(){
             d = x0 - d0 > d1 - x0 ? d1: d0;
 
         // Play time lapse starting from d
-        // Filter
+        // Filter depending on date
+        var filteredFeatures = cleanedDataFeatures.filter(function(x) {
+            return x.properties.date > d;
+        });
+
+
+        var selectedConflictTypes = [];
+        // Get selected conflict types
+        $("input[name='conflictTypes']:checked").each(function(){
+           selectedConflictTypes.push($(this).val());
+        });
+
+        // Filter based on conflict type from checkboxes
+        filteredFeatures = filteredFeatures.filter(function(x){
+            return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
+        });
         var filteredCities = convertToFeatures(
-            // Filter depending on user selection
-            cleanedDataFeatures.filter(function(x) {
-                return x.properties.date > d;
-            }));
+            filteredFeatures
+            );
+
         // Time lapse on map
         addlocations(filteredCities, d);
 
@@ -229,7 +242,8 @@ Timeline.prototype.initVis = function(){
             .attr("class", "tickerline")
             .style("stroke", "black")
             .attr("y1", 0)
-            .attr("y2", vis.height);
+            .attr("y2", vis.height)
+            .on("click", mouseclick);
 
         vis.ticker.style("display", null);
         vis.ticker.select("line.tickerline")

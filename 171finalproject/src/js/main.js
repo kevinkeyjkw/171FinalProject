@@ -148,34 +148,18 @@ function readData(){
         //legend.addTo(map);
 
         // Add legend to right panel
-        //for(var i=0;i<conflictTypes.length;i++){
-        //    $("#legend").append("<div class='legendButton'><span class='squared' style='background:" +
-        //        c20(conflictTypes[i]) + "'></span><span style='padding: 0px  0px 0px 10px;'>" + conflictTypes[i]
-        //        + "</span></div><br>");
-        //}
-
-
-        //$('body').on('click', '.legendButton', function(){
-        //    console.log("Legend!");
-        //    $(this).find(">:first-child").toggleClass("selectedLegend");
-        //});
-        //$('body').on('mouseenter', '.legendButton', function(){
-        //    console.log(this);
-        //    $(this).find(">:first-child").toggleClass("hoverStartLegend");
-        //    //this.toggleClass("hoverStartLegend");
-        //}).on('mouseleave', '.legendButton', function(){
-        //    console.log("hover end");
-        //    $(this).find(">:first-child").toggleClass("hoverStartLegend");
-        //    //this.toggleClass("hoverEndLegend");
-        //})
-
         for(var i=0;i<conflictTypes.length;i++){
-            $("#legend").append("<label><input type='checkbox'>&nbsp;&nbsp;&nbsp;" +
+            if(i == 0){
+                $("#legend").append("<label><input type='checkbox' class='check' id='checkAll'>&nbsp;&nbsp;&nbsp;" +"All");
+            }
+            $("#legend").append("<label><input type='checkbox' name='conflictTypes' class='check' value='"+ conflictTypes[i] +"'>&nbsp;&nbsp;&nbsp;" +
                 conflictTypes[i] +"&nbsp;&nbsp;<span class='squared' style='position: absolute;right: 20px; background:" +
                     c20(conflictTypes[i]) + "'>&nbsp;</span>" +
                 "</label>");
-
         }
+        $("#checkAll").click(function(){
+           $(".check").prop('checked', $(this).prop('checked'));
+        });
 
 
         cleanedData = allData;
@@ -287,9 +271,9 @@ function filterCheckboxes(){
     filterCountryCriteria = [];
     filterConflictCriteria = [];
     // Push user criteria into one array
-    $("#checkbox_countries :checked").each(function(){
-        filterCountryCriteria.push($(this).val());
-    });
+    //$("#checkbox_countries :checked").each(function(){
+    //    filterCountryCriteria.push($(this).val());
+    //});
     $("#checkbox_conflicts :checked").each(function(){
         filterConflictCriteria.push($(this).val());
     });

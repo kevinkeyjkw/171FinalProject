@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14afca8b-dd87-4e37-ad3a-b19f26cfa569" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/css/main.css" afterPath="$PROJECT_DIR$/171finalproject/src/css/main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/index.html" afterPath="$PROJECT_DIR$/171finalproject/src/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/main.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
     </list>
     <ignored path="finalproject.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,33 +25,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.73170733">
-              <caret line="173" column="103" selection-start-line="173" selection-start-column="103" selection-end-line="173" selection-end-column="103" />
+            <state vertical-scroll-proportion="-11.388889">
+              <caret line="217" column="38" selection-start-line="217" selection-start-column="25" selection-end-line="217" selection-end-column="38" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1461459225000" expanded="true" signature="4863:4874" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="5309:5320" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="5309:5460" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="5309:5479" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="5389:5416" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="6243:6474" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="6243:6493" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="6243:6500" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="6365:6408" placeholder="..." />
-                <marker date="1461459225000" expanded="true" signature="6397:6408" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="4863:4874" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="5418:5715" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="5418:5734" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="5418:5741" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="5606:5649" placeholder="..." />
+                <marker date="1461512555000" expanded="true" signature="5638:5649" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.1666665">
-              <caret line="141" column="0" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.48447895">
+              <caret line="221" column="39" selection-start-line="221" selection-start-column="39" selection-end-line="221" selection-end-column="39" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -62,8 +58,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.5769231">
-              <caret line="3" column="16" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="16" />
+            <state vertical-scroll-proportion="-4.6153846">
+              <caret line="92" column="53" selection-start-line="92" selection-start-column="53" selection-end-line="92" selection-end-column="53" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -96,10 +92,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
-        <option value="$PROJECT_DIR$/171finalproject/src/index.html" />
         <option value="$PROJECT_DIR$/171finalproject/src/css/main.css" />
+        <option value="$PROJECT_DIR$/171finalproject/src/index.html" />
         <option value="$PROJECT_DIR$/171finalproject/src/js/main.js" />
+        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
       </list>
     </option>
   </component>
@@ -349,26 +345,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5769231">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1666665">
-          <caret line="141" column="0" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/171finalproject/src/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.9358974">
@@ -377,22 +353,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.6153846">
+          <caret line="92" column="53" selection-start-line="92" selection-start-column="53" selection-end-line="92" selection-end-column="53" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73170733">
-          <caret line="173" column="103" selection-start-line="173" selection-start-column="103" selection-end-line="173" selection-end-column="103" />
+        <state vertical-scroll-proportion="-11.388889">
+          <caret line="217" column="38" selection-start-line="217" selection-start-column="25" selection-end-line="217" selection-end-column="38" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1461459225000" expanded="true" signature="4863:4874" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="5309:5320" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="5309:5460" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="5309:5479" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="5389:5416" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="6243:6474" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="6243:6493" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="6243:6500" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="6365:6408" placeholder="..." />
-            <marker date="1461459225000" expanded="true" signature="6397:6408" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="4863:4874" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="5418:5715" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="5418:5734" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="5418:5741" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="5606:5649" placeholder="..." />
+            <marker date="1461512555000" expanded="true" signature="5638:5649" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48447895">
+          <caret line="221" column="39" selection-start-line="221" selection-start-column="39" selection-end-line="221" selection-end-column="39" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
