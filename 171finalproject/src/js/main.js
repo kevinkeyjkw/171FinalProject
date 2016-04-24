@@ -160,9 +160,11 @@ function readData(){
         $("#checkAll").click(function(){
            $(".check").prop('checked', $(this).prop('checked'));
         });
+        $(".check").prop('checked', true);
 
 
         cleanedData = allData;
+
         console.log(cleanedData);
         // Create timeline
         // {Date(): numFatalities, etc}
@@ -486,6 +488,20 @@ $("#slider").slider({
 function createTimeline(data){
     timeline = new Timeline("timeline", data);
 };
+
+$.fn.scrollView = function () {
+    return this.each(function () {
+        $('html, body').animate({
+            scrollTop: $(this).offset().top-50
+        }, 1000);
+    });
+}
+$(window).load(function(){
+    $('#myModal').modal('show');
+});
+$("#myModalCloseButton").on("click", function(){
+    $('#startHere').scrollView();
+});
 
 function brushed() {
 

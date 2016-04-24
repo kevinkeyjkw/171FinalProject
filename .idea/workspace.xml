@@ -4,7 +4,6 @@
     <list default="true" id="14afca8b-dd87-4e37-ad3a-b19f26cfa569" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/index.html" afterPath="$PROJECT_DIR$/171finalproject/src/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/main.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" afterPath="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
     </list>
     <ignored path="finalproject.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,29 +24,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.388889">
-              <caret line="217" column="38" selection-start-line="217" selection-start-column="25" selection-end-line="217" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.5401662">
+              <caret line="162" column="41" selection-start-line="162" selection-start-column="41" selection-end-line="162" selection-end-column="41" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <marker date="1461512555000" expanded="true" signature="4863:4874" placeholder="..." />
-                <marker date="1461512555000" expanded="true" signature="5418:5715" placeholder="..." />
-                <marker date="1461512555000" expanded="true" signature="5418:5734" placeholder="..." />
-                <marker date="1461512555000" expanded="true" signature="5418:5741" placeholder="..." />
-                <marker date="1461512555000" expanded="true" signature="5606:5649" placeholder="..." />
-                <marker date="1461512555000" expanded="true" signature="5638:5649" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="4863:4874" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="5418:5715" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="5418:5734" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="5418:5741" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="5606:5649" placeholder="..." />
+                <marker date="1461536052000" expanded="true" signature="5638:5649" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="timeline.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48447895">
-              <caret line="221" column="39" selection-start-line="221" selection-start-column="39" selection-end-line="221" selection-end-column="39" />
+            <state vertical-scroll-proportion="-4.4444447">
+              <caret line="220" column="44" selection-start-line="220" selection-start-column="39" selection-end-line="220" selection-end-column="44" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -58,8 +57,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.6153846">
-              <caret line="92" column="53" selection-start-line="92" selection-start-column="53" selection-end-line="92" selection-end-column="53" />
+            <state vertical-scroll-proportion="-2.7948718">
+              <caret line="75" column="25" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -93,9 +92,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/171finalproject/src/css/main.css" />
+        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
         <option value="$PROJECT_DIR$/171finalproject/src/index.html" />
         <option value="$PROJECT_DIR$/171finalproject/src/js/main.js" />
-        <option value="$PROJECT_DIR$/171finalproject/src/js/timeline.js" />
       </list>
     </option>
   </component>
@@ -105,10 +104,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1449" />
+    <option name="x" value="397" />
     <option name="y" value="23" />
-    <option name="width" value="1143" />
-    <option name="height" value="1053" />
+    <option name="width" value="1002" />
+    <option name="height" value="873" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -298,6 +297,9 @@
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="14afca8b-dd87-4e37-ad3a-b19f26cfa569" name="Default" comment="" />
@@ -308,10 +310,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1449" y="23" width="1143" height="1053" extended-state="0" />
+    <frame x="397" y="23" width="1002" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21872266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.249501" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -328,6 +330,14 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -355,36 +365,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/171finalproject/src/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.6153846">
-          <caret line="92" column="53" selection-start-line="92" selection-start-column="53" selection-end-line="92" selection-end-column="53" />
+        <state vertical-scroll-proportion="-2.7948718">
+          <caret line="75" column="25" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#span#0;n#div#1;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.388889">
-          <caret line="217" column="38" selection-start-line="217" selection-start-column="25" selection-end-line="217" selection-end-column="38" />
+        <state vertical-scroll-proportion="-4.4444447">
+          <caret line="220" column="44" selection-start-line="220" selection-start-column="39" selection-end-line="220" selection-end-column="44" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1461512555000" expanded="true" signature="4863:4874" placeholder="..." />
-            <marker date="1461512555000" expanded="true" signature="5418:5715" placeholder="..." />
-            <marker date="1461512555000" expanded="true" signature="5418:5734" placeholder="..." />
-            <marker date="1461512555000" expanded="true" signature="5418:5741" placeholder="..." />
-            <marker date="1461512555000" expanded="true" signature="5606:5649" placeholder="..." />
-            <marker date="1461512555000" expanded="true" signature="5638:5649" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/timeline.js">
+    <entry file="file://$PROJECT_DIR$/171finalproject/src/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48447895">
-          <caret line="221" column="39" selection-start-line="221" selection-start-column="39" selection-end-line="221" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.5401662">
+          <caret line="162" column="41" selection-start-line="162" selection-start-column="41" selection-end-line="162" selection-end-column="41" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <marker date="1461536052000" expanded="true" signature="4863:4874" placeholder="..." />
+            <marker date="1461536052000" expanded="true" signature="5418:5715" placeholder="..." />
+            <marker date="1461536052000" expanded="true" signature="5418:5734" placeholder="..." />
+            <marker date="1461536052000" expanded="true" signature="5418:5741" placeholder="..." />
+            <marker date="1461536052000" expanded="true" signature="5606:5649" placeholder="..." />
+            <marker date="1461536052000" expanded="true" signature="5638:5649" placeholder="..." />
           </folding>
         </state>
       </provider>
