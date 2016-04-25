@@ -13,20 +13,7 @@ var noteFadeIn = 3, noteFadeOut = notesDelay - noteFadeIn;
 var filterCountryCriteria = [];
 var filterConflictCriteria = [];
 var timeline;
-
-var cities={"type": "FeatureCollection", "features": [
-
-        {"type": "Feature", "properties": {"name":"India", "t":1},"geometry": {"type": "Point", "coordinates": [78.962880, 20.593684]}},
-        {"type": "Feature", "properties": {"name":"Sri Lanka", "t":2},"geometry": {"type": "Point", "coordinates": [80.771797, 7.873054]}},
-        {"type": "Feature", "properties": {"name":"Pakistan", "t":3},"geometry": {"type": "Point", "coordinates": [69.345116, 30.375321]}},
-
-    ]};
-
-var time_lkup=[
-    {"t":1, "date":"01-01-2015"},
-    {"t":2, "date":"02-01-2015"},
-    {"t":3, "date":"03-01-2015"},
-];
+var linechart;
 
 var speed=800;
 var timelapse_totaltime = 90;
@@ -50,7 +37,7 @@ function applyLatLngToLayer(d) {
 //create map object and set default positions and zoom level
 var map = L.map('map',{
     scrollWheelZoom: false
-}).setView([19.89072, 90.7470], 4);
+}).setView([20.5937, 78.9629], 4);//19.89072, 90.7470
 map.on('mouseout',function(){
         map.scrollWheelZoom.disable();
 
@@ -112,6 +99,7 @@ var fatalitiesScale = d3.scale.linear();
 var dayConflictDict = {};
 
 function readData(){
+
     d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData){
 
         // Convert strings to numbers
@@ -127,25 +115,8 @@ function readData(){
             }
         });
 
-        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "red", "#FF34FF",
+        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc",
             "orange", "green", "#0000A6", "#1CE6FF"]);
-
-        // Legend for map
-        //legend.onAdd = function(map){
-        //    var div = L.DomUtil.create('div', 'info legend'),
-        //        labels = [];
-        //
-        //    // loop through our density intervals and generate a label with a colored square for each interval
-        //    for (var i = 0; i < conflictTypes.length; i++) {
-        //        div.innerHTML +=
-        //            '<i style="background:' + c20(conflictTypes[i]) +
-        //            '" class="legendButton" value="'+conflictTypes[i]+'"></i> ' +
-        //            conflictTypes[i] + '<br>';
-        //    }
-        //
-        //    return div;
-        //};
-        //legend.addTo(map);
 
         // Add legend to right panel
         for(var i=0;i<conflictTypes.length;i++){
@@ -157,17 +128,9 @@ function readData(){
                     c20(conflictTypes[i]) + "'>&nbsp;</span>" +
                 "</label>");
         }
-        $("#checkAll").click(function(){
-           $(".check").prop('checked', $(this).prop('checked'));
-        });
-        $(".check").prop('checked', true);
-
 
         cleanedData = allData;
 
-        console.log(cleanedData);
-        // Create timeline
-        // {Date(): numFatalities, etc}
         cleanedData.forEach(function(d){
             if(d.EVENT_DATE.getTime() in dayConflictDict){
                 dayConflictDict[d.EVENT_DATE.getTime()] += 1;
@@ -175,9 +138,9 @@ function readData(){
                 dayConflictDict[d.EVENT_DATE.getTime()] = 1;
             }
         });
-        console.log(Object.keys(dayConflictDict).sort());
-        console.log(dayConflictDict);
+
         createTimeline(dayConflictDict);
+        //createLinechart(cleanedData);
 
         // Mean of fatalities
         var fatMean = d3.mean(cleanedData.map(function(d){return d.FATALITIES;}));
@@ -236,6 +199,10 @@ function readData(){
 
 // Read in data
 readData();
+$("#checkAll").click(function(){
+    $(".check").prop('checked', $(this).prop('checked'));
+});
+$(".check").prop('checked', true);
 
 // Takes in array of features and converts to this format
 function convertToFeatures(features){
@@ -485,6 +452,10 @@ $("#slider").slider({
 
     });
 
+function createLinechart(data){
+    linechart = new Linechart("line-chart-1", data);
+}
+
 function createTimeline(data){
     timeline = new Timeline("timeline", data);
 };
@@ -502,7 +473,6 @@ $(window).load(function(){
 $("#myModalCloseButton").on("click", function(){
     $('#startHere').scrollView();
 });
-
 function brushed() {
 
     // TO-DO: React to 'brushed' event

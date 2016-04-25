@@ -106,13 +106,13 @@ textarea {
     margin:5px 10%;
     border:2px solid #000;
     border-radius: 5px;
-    height:450px;
+    height:400px;
     overflow:hidden;
     background: #F0F8FF;
 }
 
 #timeline{
-    margin-top: -90px;
+    margin-top: -160px;
 }
 
 .control {
@@ -149,6 +149,11 @@ textarea {
     height: 200px;
 }
 
+#instruction{
+    color: #B21018;
+    /*background-color: cornsilk;*/
+}
+
 #slider label {
     position: absolute;
     width: 20px;
@@ -162,6 +167,10 @@ textarea {
 #slider {
     width: 50%;
     margin: 2em auto;
+}
+
+.active {
+    background:#ccc url(http://cdn2.iconfinder.com/data/icons/splashyIcons/arrow_state_blue_collapsed.png) center bottom no-repeat;
 }
 
 div.tooltip {
