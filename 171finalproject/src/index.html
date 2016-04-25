@@ -45,15 +45,6 @@
                     <li>
                         <a href="visualizations.html">Visulizations</a>
                     </li>
-                    <!--<li>-->
-                        <!--<a href="#">Process Book</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#">Sources</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#">Results</a>-->
-                    <!--</li>-->
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container -->
@@ -74,6 +65,11 @@
                     At a high level, our goal is to show users that the conflicts in southeast asia are going up/down. .</p>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center">Time Lapse</h1>
+            </div>
+        </div>
         <div class="row" id="startHere">
             <div class="col-lg-10">
                 <div id="note"></div>
@@ -88,23 +84,9 @@
             <div class="col-lg-2 control text-center" >
                 <div class="row ">
                     <div class="col-lg-12 text-center">
-                        <!--<button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="addlocations();">-->
-                            <!--<span class="glyphicon glyphicon-play" aria-hidden="true"></span>-->
-                        <!--</button>-->
                         <span id="instruction">Click on the red spikes below to start!</span>
 
                     </div>
-                    <!--<div class="col-lg-6 text-center">-->
-                        <!--<button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="stop()">-->
-                            <!--<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>-->
-                        <!--</button>-->
-                    <!--</div>-->
-
-                    <!--<div class="col-lg-4">-->
-                        <!--<button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="stop()">-->
-                            <!--<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>-->
-                        <!--</button>-->
-                    <!--</div>-->
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -124,9 +106,23 @@
                 <div id="timeline"></div>
             </div>
         </div>
-
-
-
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center">Compare major conflicts among all countries during year of 2015</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <select id="y-type" class="form-control">
+                    <option value="Conflicts">Conflicts</option>
+                    <option value="Fatalities">Fatalities</option>
+                </select>
+            </div>
+            <div class="col-lg-12">
+                <div id="barchart"></div>
+                <p> * Hover to see the number of conflicts within each category</p>
+            </div>
+        </div>
     </div>
 
 
@@ -180,6 +176,8 @@
         <script src="js/d3.legend.js"></script>
         <script src="js/timeline.js"></script>
         <script src="js/linecharts.js"></script>
+    <script src="js/d3.tip.v0.6.3.js"></script>
+        <script src="js/barchart.js"></script>
         <script src="js/main.js"></script>
 
     </body>

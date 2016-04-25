@@ -20,6 +20,7 @@ var filterCountryCriteria = [];
 var filterConflictCriteria = [];
 var timeline;
 var linechart;
+var barchart;
 
 var speed=800;
 var timelapse_totaltime = 90;
@@ -142,6 +143,10 @@ function readData(){
 
         cleanedData = allData;
 
+        // Create stacked barchart
+        createBarchart(cleanedData);
+
+
         cleanedData.forEach(function(d){
             if(d.EVENT_DATE.getTime() in dayConflictDict){
                 dayConflictDict[d.EVENT_DATE.getTime()] += 1;
@@ -151,7 +156,7 @@ function readData(){
         });
 
         createTimeline(dayConflictDict);
-        //createLinechart(cleanedData);
+
 
         // Mean of fatalities
         var fatMean = d3.mean(cleanedData.map(function(d){return d.FATALITIES;}));
@@ -416,6 +421,13 @@ function createLinechart(data){
 
 function createTimeline(data){
     timeline = new Timeline("timeline", data);
+};
+
+function createBarchart(data){
+    barchart = new Barchart("barchart", data);
+    $("#y-type").change(function(){
+        barchart.updateVisualization();
+    });
 };
 
 $.fn.scrollView = function () {
