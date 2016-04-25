@@ -12,7 +12,9 @@ Barchart = function(_parentElement, _data){
 
 Barchart.prototype.updateVisualization = function(){
     var vis = this;
+    vis.svg.selectAll("rect").remove();
     var users = document.getElementById("y-type");
+
     vis.selection = users.options[users.selectedIndex].value;
 
 
@@ -180,7 +182,7 @@ Barchart.prototype.initVis = function(){
     vis.tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function(d, i) {
-            return "Conflicts: "+ (d.y1- d.y0);
+            return vis.selection +": "+ (d.y1- d.y0);
         })
         .offset([-6, 0]);
     vis.svg.call(vis.tip);
