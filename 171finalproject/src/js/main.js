@@ -1,5 +1,11 @@
-// References
-// http://stackoverflow.com/questions/10224856/jquery-ui-slider-labels-under-slider
+/* References
+ * http://stackoverflow.com/questions/10224856/jquery-ui-slider-labels-under-slider
+ * http://bl.ocks.org/jhubley/68423588d4b15bea5236
+ * http://alignedleft.com/tutorials/d3
+ * http://stackoverflow.com/questions/2015667/how-do-i-set-span-background-color-so-it-colors-the-background-throughout-the-li
+ * http://www.w3schools.com/
+ * https://www.dashingd3js.com/table-of-contents
+ */
 
 var months = ["Jan", "Feb", "Mar", "Apr","May", "Jun","Jul" , "Aug", "Sept", "Oct", "Nov", "Dec" ];
 var months_dict = {}
@@ -129,6 +135,11 @@ function readData(){
                 "</label>");
         }
 
+        $("#checkAll").click(function(){
+            $(".check").prop('checked', $(this).prop('checked'));
+        });
+        $(".check").prop('checked', true);
+
         cleanedData = allData;
 
         cleanedData.forEach(function(d){
@@ -199,10 +210,7 @@ function readData(){
 
 // Read in data
 readData();
-$("#checkAll").click(function(){
-    $(".check").prop('checked', $(this).prop('checked'));
-});
-$(".check").prop('checked', true);
+
 
 // Takes in array of features and converts to this format
 function convertToFeatures(features){
@@ -236,26 +244,18 @@ function stop(){
 
 
 // Filter data based on checkboxes
-function filterCheckboxes(){
-    filterCountryCriteria = [];
-    filterConflictCriteria = [];
-    // Push user criteria into one array
-    //$("#checkbox_countries :checked").each(function(){
-    //    filterCountryCriteria.push($(this).val());
-    //});
-    $("#checkbox_conflicts :checked").each(function(){
-        filterConflictCriteria.push($(this).val());
+function filterCheckboxes(filteredFeatures){
+    var selectedConflictTypes = [];
+    // Get selected conflict types
+    $("input[name='conflictTypes']:checked").each(function(){
+        selectedConflictTypes.push($(this).val());
     });
 
-    return (filterCountryCriteria.length == 0) ?
-        (filterConflictCriteria.length == 0 ? cleanedDataFeatures: cleanedDataFeatures.filter(function(d){
-            return filterConflictCriteria.indexOf(d.properties.conflict_type) != -1;
-        }))
-        : filterConflictCriteria.length== 0 ? (cleanedDataFeatures.filter(function(d){
-        return filterCountryCriteria.indexOf(d.properties.country) != -1;
-    })):cleanedDataFeatures.filter(function(d){
-        return filterCountryCriteria.indexOf(d.properties.country) != -1 && filterConflictCriteria.indexOf(d.properties.conflict_type) != -1;
+    // Filter based on conflict type from checkboxes
+    filteredFeatures = filteredFeatures.filter(function(x){
+        return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
     });
+    return filteredFeatures;
 }
 
 
@@ -410,48 +410,6 @@ function slideUpdateTimelapse(month){
 }
 
 
-
-$("#slider").slider({
-        orientation: "vertical",
-        value: 4,
-        min: 1,
-        max: 12,
-        step: 1,
-        slide: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.value );
-            slideUpdateTimelapse(ui.value);
-        }
-    })
-    .each(function() {
-
-        // Add labels to slider whose values
-        // are specified by min, max
-
-        // Get the options for this slider (specified above)
-        var opt = $(this).data().uiSlider.options;
-
-        // Get the number of possible values
-        var vals = opt.max - opt.min;
-
-        // Position the labels
-        for (var i = 0; i <= vals; i++) {
-
-            // Create a new element and position it with percentages
-            //var el = $('<label>' + months_dict[i + 1] + '</label>').css('top', (i/vals*100) + '%');
-            var el = $('<label>' + months_dict[i + 1] + '</label>').css(
-                {
-                    top: (i/vals*100)-8 + '%',
-                    right: -30
-                }
-            );
-
-            // Add the element inside #slider
-            $("#slider").append(el);
-
-        }
-
-    });
-
 function createLinechart(data){
     linechart = new Linechart("line-chart-1", data);
 }
@@ -468,17 +426,66 @@ $.fn.scrollView = function () {
     });
 }
 $(window).load(function(){
-    $('#myModal').modal('show');
+    //$('#myModal').modal('show');
 });
 $("#myModalCloseButton").on("click", function(){
     $('#startHere').scrollView();
 });
 function brushed() {
 
-    // TO-DO: React to 'brushed' event
-    //areachart.x.domain(
-    //    timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent()
-    //);
-    //areachart.wrangleData();
-    //console.log(timeline.brush.empty() ?  timeline.x.domain(): timeline.brush.extent());
+    if(!timeline.brush.empty()) {
+
+        stop();
+        // Filter depending on brush
+        var tmp = cleanedDataFeatures.filter(function (d) {
+            return d.properties.date >= timeline.brush.extent()[0] && d.properties.date <= timeline.brush.extent()[1];
+        });
+        var filteredCities = convertToFeatures(
+            //Filter based on checkboxes
+            filterCheckboxes(tmp)
+        );
+        if(filteredCities.features.length == 0){
+            return;
+        }
+        fatalitiesScale.range([2,70]);
+        //// Add circles
+
+        var locations = g.selectAll("circle")
+            .data(filteredCities.features)
+            .enter()
+            .append("circle")
+            .attr("fill", function (d) {
+                return c20(d.properties.conflict_type);
+            })
+            .style("opacity", 0.4)
+            .attr("class", "points")
+            .attr("r", function (d) {
+                return fatalitiesScale(d.properties.fatalities);
+            })
+            ;
+
+        reset();
+        map.on("viewreset", reset);
+
+        function reset() {
+
+            var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
+
+            // Setting the size and location of the overall SVG container
+            svg
+                .attr("width", bottomRight[0] - topLeft[0] + 120)
+                .attr("height", bottomRight[1] - topLeft[1] + 120)
+                .style("left", topLeft[0] - 50 + "px")
+                .style("top", topLeft[1] - 50 + "px");
+
+            g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+
+            locations.attr("transform",
+                function (d) {
+                    return "translate(" +
+                        applyLatLngToLayer(d).x + "," +
+                        applyLatLngToLayer(d).y + ")";
+                });
+        }
+    }
 }

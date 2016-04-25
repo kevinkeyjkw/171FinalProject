@@ -1,12 +1,9 @@
-/**
- * Created by Kevin on 4/22/16.
- */
-
 /*
  * Timeline - Object constructor function
  * @param _parentElement 	-- the HTML element in which to draw the visualization
  * @param _data						-- the
  */
+
 
 Timeline = function(_parentElement, _data){
     this.parentElement = _parentElement;
@@ -211,21 +208,23 @@ Timeline.prototype.initVis = function(){
 
         // Play time lapse starting from d
         // Filter depending on date
-        var filteredFeatures = cleanedDataFeatures.filter(function(x) {
+        var features = cleanedDataFeatures.filter(function(x) {
             return x.properties.date > d;
         });
 
 
-        var selectedConflictTypes = [];
-        // Get selected conflict types
-        $("input[name='conflictTypes']:checked").each(function(){
-           selectedConflictTypes.push($(this).val());
-        });
+        //var selectedConflictTypes = [];
+        //// Get selected conflict types
+        //$("input[name='conflictTypes']:checked").each(function(){
+        //   selectedConflictTypes.push($(this).val());
+        //});
+        //
+        // //Filter based on conflict type from checkboxes
+        //var filteredFeatures = features.filter(function(x){
+        //    return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
+        //});
+        var filteredFeatures = filterCheckboxes(features);
 
-        // Filter based on conflict type from checkboxes
-        filteredFeatures = filteredFeatures.filter(function(x){
-            return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
-        });
         var filteredCities = convertToFeatures(
             filteredFeatures
             );
@@ -297,6 +296,8 @@ Timeline.prototype.initVis = function(){
 
     }
 }
+
+
 
 
 
