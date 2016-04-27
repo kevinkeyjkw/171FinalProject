@@ -220,7 +220,7 @@ div.tooltip {
     line-height: 18px;
     color: #555;
     background-color: aliceblue;
-    font-family: "Courier New";
+    /*font-family: "Courier New";*/
 }
 .legend i {
     width: 18px;

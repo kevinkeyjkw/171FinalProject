@@ -12,7 +12,7 @@ Barchart = function(_parentElement, _data){
 
 Barchart.prototype.updateVisualization = function(){
     var vis = this;
-    vis.svg.selectAll("rect").remove();
+    vis.svg.selectAll("rect.bar").remove();
     var users = document.getElementById("y-type");
 
     vis.selection = users.options[users.selectedIndex].value;

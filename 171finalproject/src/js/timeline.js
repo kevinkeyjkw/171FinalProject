@@ -96,7 +96,7 @@ Timeline.prototype.initVis = function(){
         });
 
     vis.svg.on("click", function(){
-        console.log("SVG click!");
+        //console.log("SVG click!");
         var path = vis.svg.select("path").node();
         new_click_event = new Event('click');
         new_click_event.pageX = d3.event.pageX;
@@ -104,6 +104,15 @@ Timeline.prototype.initVis = function(){
         new_click_event.pageY = d3.event.pageY;
         new_click_event.clientY = d3.event.clientY;
         path.dispatchEvent(new_click_event);
+    }).on('mousedown', function(){
+        //console.log("Down!");
+        //brush_elm = vis.svg.select(".brush").node();
+        //new_click_event = new Event('mousedown');
+        //new_click_event.pageX = d3.event.pageX;
+        //new_click_event.clientX = d3.event.clientX;
+        //new_click_event.pageY = d3.event.pageY;
+        //new_click_event.clientY = d3.event.clientY;
+        //brush_elm.dispatchEvent(new_click_event);
     });
 
     vis.svg.append("path")
@@ -121,14 +130,14 @@ Timeline.prototype.initVis = function(){
         }).on("mousemove", mousemove)
         .on("click", mouseclick)
         .on('mousedown', function(){
-            console.log("Down!");
-            brush_elm = vis.svg.select(".brush").node();
-            new_click_event = new Event('mousedown');
-            new_click_event.pageX = d3.event.pageX;
-            new_click_event.clientX = d3.event.clientX;
-            new_click_event.pageY = d3.event.pageY;
-            new_click_event.clientY = d3.event.clientY;
-            brush_elm.dispatchEvent(new_click_event);
+            console.log("No down!");
+            //brush_elm = vis.svg.select(".brush").node();
+            //new_click_event = new Event('mousedown');
+            //new_click_event.pageX = d3.event.pageX;
+            //new_click_event.clientX = d3.event.clientX;
+            //new_click_event.pageY = d3.event.pageY;
+            //new_click_event.clientY = d3.event.clientY;
+            //brush_elm.dispatchEvent(new_click_event);
         })
         ;
 
@@ -210,7 +219,7 @@ Timeline.prototype.initVis = function(){
     vis.bisectDate = d3.bisector(function(d) { return d; }).left;
 
     function mouseclick(){
-        console.log("Click!");
+        //console.log("Click!");
         var x0 = vis.x.invert(d3.mouse(this)[0]),
             i = vis.bisectDate(vis.keysToDates, x0);
         var d0 = vis.keysToDates[i-1],
