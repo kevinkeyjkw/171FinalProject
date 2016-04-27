@@ -95,6 +95,17 @@ Timeline.prototype.initVis = function(){
             return vis.y(vis.displayData[d]);
         });
 
+    vis.svg.on("click", function(){
+        console.log("SVG click!");
+        var path = vis.svg.select("path").node();
+        new_click_event = new Event('click');
+        new_click_event.pageX = d3.event.pageX;
+        new_click_event.clientX = d3.event.clientX;
+        new_click_event.pageY = d3.event.pageY;
+        new_click_event.clientY = d3.event.clientY;
+        path.dispatchEvent(new_click_event);
+    });
+
     vis.svg.append("path")
         .datum(Object.keys(vis.displayData))
         .attr("fill", "#b21018")
@@ -229,6 +240,7 @@ Timeline.prototype.initVis = function(){
             filteredFeatures
             );
 
+        stop();
         // Time lapse on map
         addlocations(filteredCities, d);
 

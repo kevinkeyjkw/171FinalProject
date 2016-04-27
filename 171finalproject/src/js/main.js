@@ -243,8 +243,8 @@ function stop(){
     clearInterval(dayInterval);
     timeline.ticker.select("line.tickerline").transition();
     timeline.ticker.select("line.tickerline").remove();
-    $("#day").html("");
-    $("#note").html("");
+    $("#day").html();
+    $("#note").empty();
 }
 
 
@@ -268,7 +268,7 @@ function filterCheckboxes(filteredFeatures){
 function addlocations(filteredCities, startDate){
     // Remove current circles and notes
     //g.selectAll("circle").remove();
-    stop();
+    //stop();
     // Don't filter if no criteria was set
     //var filteredCities = convertToFeatures(
     //    // Filter depending on user selection
@@ -312,6 +312,7 @@ function addlocations(filteredCities, startDate){
     notesPassed = 0;
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
     $("#note").html('" ' + notes[notesPassed] + ' "').fadeOut(noteFadeOut*1000);
+
     noteInterval = window.setInterval(function(){
         notesPassed += 1;
         $("#note").html('" ' + notes[notesPassed] + ' "').fadeIn(noteFadeIn*1000);
