@@ -67,7 +67,7 @@ L.tileLayer('https://api.mapbox.com/v4/'+mapType+'/{z}/{x}/{y}.png?access_token=
 var markers;
 var latitude = 1;
 var longitude = 0;
-
+var global_collection;
 // appending the SVG to the Leaflet map pane
 // g (group) element will be inside the svg
 var svg = d3.select(map.getPanes().overlayPane).append("svg");
@@ -101,7 +101,7 @@ d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
         // Set a random country to selected to show user you can select countries
 
         $($(".country_path")[2]).toggleClass("country_clicked");
-
+        global_collection = collection;
         reset();
         map.on("viewreset", reset);
 
@@ -124,7 +124,20 @@ d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
 
 });
 
-
+//function reset() {
+//    var bounds = d3path.bounds(global_collection), topLeft = bounds[0], bottomRight = bounds[1];
+//
+//    // Setting the size and location of the overall SVG container
+//    svg
+//        .attr("width", bottomRight[0] - topLeft[0] + 520)
+//        .attr("height", bottomRight[1] - topLeft[1] + 120)
+//        .style("left", topLeft[0] - 50 + "px")
+//        .style("top", topLeft[1] - 50 + "px");
+//
+//    g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+//
+//    feature.attr("d", d3path);
+//}
 
 
 var svg2 = d3.select("#time").append("svg")
@@ -417,16 +430,24 @@ function addlocations(filteredCities, startDate){
     map.on("viewreset", reset);
 
     function reset() {
-        var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
+        var bounds = d3path.bounds(global_collection), topLeft = bounds[0], bottomRight = bounds[1];
 
         // Setting the size and location of the overall SVG container
-        svg
-            .attr("width", bottomRight[0] - topLeft[0] + 520)
-            .attr("height", bottomRight[1] - topLeft[1] + 120)
-            .style("left", topLeft[0] - 50 + "px")
-            .style("top", topLeft[1] - 50 + "px");
+        //svg
+        //    .attr("width", bottomRight[0] - topLeft[0] + 520)
+        //    .attr("height", bottomRight[1] - topLeft[1] + 120)
+        //    .style("left", topLeft[0] - 50 + "px")
+        //    .style("top", topLeft[1] - 50 + "px");
+        //
+        //g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
 
-        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+        svg
+            .attr("width", bottomRight[0] - topLeft[0])
+            .attr("height", bottomRight[1] - topLeft[1])
+            .style("left", topLeft[0] + "px")
+            .style("top", topLeft[1] + "px");
+
+        g.attr("transform", "translate(" + (-topLeft[0]) + "," + (-topLeft[1]) + ")");
 
         locations.attr("transform",
             function(d) {
@@ -439,63 +460,6 @@ function addlocations(filteredCities, startDate){
 
 
 }
-
-// Update time lapse with slider
-function slideUpdateTimelapse(month){
-    // stop time lapse
-    g.selectAll("circle").transition();
-    g.selectAll("circle").remove();
-    // stop day count and note
-    clearInterval(dayInterval);
-    clearInterval(noteInterval);
-
-    // Filter depending on user selection
-    var filteredCities = convertToFeatures(
-        filterCheckboxes().filter(function(d){
-            return d.properties.date.getMonth()+1 == month;
-        })
-    );
-
-    fatalitiesScale.range([2,70]);
-    // Add circles
-    var locations = g.selectAll("circle")
-        .data(filteredCities.features)
-        .enter()
-        .append("circle")
-        .attr("fill", function(d){
-            return c20(d.properties.conflict_type);
-        })
-        .style("opacity", 0.4)
-        .attr("class", "points")
-        .attr("r", function(d){
-            return fatalitiesScale(d.properties.fatalities);
-        })
-        ;
-
-    reset();
-    map.on("viewreset", reset);
-
-    function reset() {
-        var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
-
-        // Setting the size and location of the overall SVG container
-        svg
-            .attr("width", bottomRight[0] - topLeft[0] + 120)
-            .attr("height", bottomRight[1] - topLeft[1] + 120)
-            .style("left", topLeft[0] - 50 + "px")
-            .style("top", topLeft[1] - 50 + "px");
-
-        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
-
-        locations.attr("transform",
-            function(d) {
-                return "translate(" +
-                    applyLatLngToLayer(d).x + "," +
-                    applyLatLngToLayer(d).y + ")";
-            });
-    }
-}
-
 
 function createLinechart(data){
     linechart = new Linechart("line-chart-1", data);
@@ -570,7 +534,7 @@ function brushed() {
 
         function reset() {
 
-            var bounds = d3path.bounds(filteredCities), topLeft = bounds[0], bottomRight = bounds[1];
+            var bounds = d3path.bounds(global_collection), topLeft = bounds[0], bottomRight = bounds[1];
 
             // Setting the size and location of the overall SVG container
             svg
