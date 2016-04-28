@@ -50,12 +50,6 @@ map.on('mouseout',function(){
 
 });
 map.on('click', function() {
-    //if (map.scrollWheelZoom.enabled()) {
-    //    map.scrollWheelZoom.disable();
-    //}
-    //else {
-    //    map.scrollWheelZoom.enable();
-    //}
     map.scrollWheelZoom.enable();
 });
 
@@ -78,11 +72,51 @@ var longitude = 0;
 // g (group) element will be inside the svg
 var svg = d3.select(map.getPanes().overlayPane).append("svg");
 var g = svg.append("g").attr("class", "leaflet-zoom-hide");
-
-var legend = L.control({position: 'topright'});
-
 var transform = d3.geo.transform({point: projectPoint});
 var d3path = d3.geo.path().projection(transform);
+
+// Overlay region svg onto map
+d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
+    if(error){
+        console.log(error);
+    }
+    d3.json("subregion_South-Eastern_Asia_subunits.json", function(error2, collection2){
+        if(error2){
+            console.log(error2);
+        }
+        collection.features = collection.features.concat(collection2.features);
+        console.log(collection);
+        var feature = g.selectAll("path")
+            .data(collection.features)
+            .enter()
+            .append("path")
+            .attr("class", "countryy");
+
+        //var bounds = d3path.bounds(collection), topLeft = bounds[0], bottomRight = bounds[1];
+        reset();
+        map.on("viewreset", reset);
+
+        function reset() {
+            var bounds = d3path.bounds(collection), topLeft = bounds[0], bottomRight = bounds[1];
+
+            // Setting the size and location of the overall SVG container
+            svg
+                .attr("width", bottomRight[0] - topLeft[0] + 520)
+                .attr("height", bottomRight[1] - topLeft[1] + 120)
+                .style("left", topLeft[0] - 50 + "px")
+                .style("top", topLeft[1] - 50 + "px");
+
+            g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")");
+
+            feature.attr("d", d3path);
+        }
+    })
+
+
+});
+
+
+
 
 var svg2 = d3.select("#time").append("svg")
     .attr("height", 200)
@@ -121,7 +155,7 @@ function readData(){
                 conflictTypes.push(d.EVENT_TYPE.trim().toLowerCase());
             }
         });
-
+        console.log(conflictTypes);
         c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc",
             "orange", "green", "#0000A6", "#1CE6FF"]);
 
