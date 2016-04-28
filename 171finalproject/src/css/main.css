@@ -279,8 +279,10 @@ div.tooltip {
 }
 
 .country_path:hover {
-    fill: #000;
-    fill-opacity: .5;
+    /*fill: #000;*/
+    /*fill-opacity: .3;*/
+    stroke: #fff;
+    stroke-width: 3px;
     /*fill: brown;*/
     /*fill-opacity: .3;*/
 }
