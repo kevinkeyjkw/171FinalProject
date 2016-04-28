@@ -282,8 +282,16 @@ function calculateDelay(date, startDate){
 function play(){
     // Filter by checkbox
     var filteredFeatures = filterCheckboxes(cleanedDataFeatures);
+    if(filteredFeatures.length == 0){
+        alert("Select at least one feature");
+        return;
+    }
     // Filter by country
     filteredFeatures = filterCountry(filteredFeatures);
+    if(filteredFeatures.length == 0){
+        alert("Select at least one country");
+        return;
+    }
     var filteredCities = convertToFeatures(
         filteredFeatures
     );

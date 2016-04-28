@@ -254,8 +254,16 @@ Timeline.prototype.initVis = function(){
 
         // Filter by checkbox
         var filteredFeatures = filterCheckboxes(features);
+        if(filteredFeatures.length == 0){
+            alert("Select at least one conflict type");
+            return;
+        }
         // Filter by country
         filteredFeatures = filterCountry(filteredFeatures);
+        if(filteredFeatures.length == 0){
+            alert("Select at least one country");
+            return;
+        }
         var filteredCities = convertToFeatures(
             filteredFeatures
             );
@@ -265,25 +273,6 @@ Timeline.prototype.initVis = function(){
         addlocations(filteredCities, d);
 
         // Move a black vertical line along timeline
-        //vis.ticker.style("display", "none");
-        //vis.ticker.select("line.tickerline").transition();
-        //vis.ticker.select("line.tickerline").remove();
-        //// ticker for timeline
-        //vis.ticker.append("line")
-        //    .attr("class", "tickerline")
-        //    .style("stroke", "black")
-        //    .attr("y1", 0)
-        //    .attr("y2", vis.height)
-        //    .on("click", mouseclick);
-        //
-        //vis.ticker.style("display", null);
-        //vis.ticker.select("line.tickerline")
-        //    .attr("transform",
-        //    "translate(" + vis.x(d) + ",0)")
-        //    .transition().duration((365 - d.getMonth()*30 - d.getDate()) * dayDelay * 1000)
-        //    .ease("linear")
-        //    .attr("transform",
-        //    "translate(" + vis.timelineWidth + ",0)");
         vis.moveTicker(d);
 
     }
