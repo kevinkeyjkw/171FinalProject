@@ -90,9 +90,18 @@ d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
             .data(collection.features)
             .enter()
             .append("path")
-            .attr("class", "countryy");
+            .attr("value", function(d){
+                return d.properties.name_long.toLowerCase();
+            })
+            .attr("class", "country_path")
+            .on("click", function(d){
+                $(this).toggleClass("country_clicked");
+            });
 
-        //var bounds = d3path.bounds(collection), topLeft = bounds[0], bottomRight = bounds[1];
+        // Set a random country to selected to show user you can select countries
+
+        $($(".country_path")[2]).toggleClass("country_clicked");
+
         reset();
         map.on("viewreset", reset);
 
@@ -228,7 +237,7 @@ function readData(){
             if(d.LATITUDE != null && d.LONGITUDE != null){
                 cleanedDataFeatures.push({
                         "type": "Feature",
-                        "properties": {"country": d.COUNTRY,
+                        "properties": {"country": d.COUNTRY.toLowerCase(),
                         "date": d.EVENT_DATE,
                         "conflict_type": d.EVENT_TYPE.trim().toLowerCase(),
                         "notes": d.NOTES,
@@ -269,6 +278,22 @@ function calculateDelay(date, startDate){
     return t;
 }
 
+// play time lapse from beginning
+function play(){
+    // Filter by checkbox
+    var filteredFeatures = filterCheckboxes(cleanedDataFeatures);
+    // Filter by country
+    filteredFeatures = filterCountry(filteredFeatures);
+    var filteredCities = convertToFeatures(
+        filteredFeatures
+    );
+
+    stop();
+    var firstDay = new Date("January 1, 2015");
+    // Time lapse on map
+    addlocations(filteredCities, firstDay);
+    timeline.moveTicker(firstDay);
+}
 // stop time lapse
 function stop(){
     g.selectAll("circle").transition();
@@ -293,6 +318,20 @@ function filterCheckboxes(filteredFeatures){
     // Filter based on conflict type from checkboxes
     filteredFeatures = filteredFeatures.filter(function(x){
         return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
+    });
+    return filteredFeatures;
+}
+
+function filterCountry(filteredFeatures){
+    var selectedCountryTypes = [];
+
+    $(".country_clicked").each(function(){
+        selectedCountryTypes.push($(this).attr('value'));
+    });
+
+    // Filter based on conflict type from checkboxes
+    filteredFeatures = filteredFeatures.filter(function(x){
+        return selectedCountryTypes.indexOf(x.properties.country) != -1;
     });
     return filteredFeatures;
 }
@@ -487,9 +526,16 @@ function brushed() {
         var tmp = cleanedDataFeatures.filter(function (d) {
             return d.properties.date >= timeline.brush.extent()[0] && d.properties.date <= timeline.brush.extent()[1];
         });
+
+        // Filter by checkbox
+        tmp = filterCheckboxes(tmp);
+
+        // Filter by country selected
+        tmp = filterCountry(tmp);
+
         var filteredCities = convertToFeatures(
             //Filter based on checkboxes
-            filterCheckboxes(tmp)
+            tmp
         );
         if(filteredCities.features.length == 0){
             return;

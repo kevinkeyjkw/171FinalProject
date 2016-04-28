@@ -267,16 +267,22 @@ div.tooltip {
     margin-bottom: 5px;
     font-weight: 600;
 }
-.countryy {
+.country_path.country_clicked {
+    fill: #000;
+    fill-opacity: .5;
+}
+.country_path {
     fill: #000;
     fill-opacity: .2;
     stroke: #fff;
     stroke-width: 1.5px;
 }
 
-.countryy:hover {
-    fill: brown;
-    fill-opacity: .7;
+.country_path:hover {
+    fill: #000;
+    fill-opacity: .5;
+    /*fill: brown;*/
+    /*fill-opacity: .3;*/
 }
 
 .d3-tip {

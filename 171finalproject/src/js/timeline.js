@@ -23,7 +23,26 @@ Timeline = function(_parentElement, _data){
 /*
  * Initialize area chart with brushing component
  */
+Timeline.prototype.moveTicker = function(d){
+    var vis = this;
+    vis.ticker.select("line.tickerline").transition();
+    vis.ticker.select("line.tickerline").remove();
+    // ticker for timeline
+    vis.ticker.append("line")
+        .attr("class", "tickerline")
+        .style("stroke", "black")
+        .attr("y1", 0)
+        .attr("y2", vis.height);
 
+    vis.ticker.style("display", null);
+    vis.ticker.select("line.tickerline")
+        .attr("transform",
+            "translate(" + vis.x(d) + ",0)")
+        .transition().duration((365 - d.getMonth()*30 - d.getDate()) * dayDelay * 1000)
+        .ease("linear")
+        .attr("transform",
+            "translate(" + vis.timelineWidth + ",0)");
+}
 Timeline.prototype.initVis = function(){
     var vis = this; // read about the this
     var extraWidth = 50, extraHeight = 15;
@@ -233,18 +252,10 @@ Timeline.prototype.initVis = function(){
         });
 
 
-        //var selectedConflictTypes = [];
-        //// Get selected conflict types
-        //$("input[name='conflictTypes']:checked").each(function(){
-        //   selectedConflictTypes.push($(this).val());
-        //});
-        //
-        // //Filter based on conflict type from checkboxes
-        //var filteredFeatures = features.filter(function(x){
-        //    return selectedConflictTypes.indexOf(x.properties.conflict_type) != -1;
-        //});
+        // Filter by checkbox
         var filteredFeatures = filterCheckboxes(features);
-
+        // Filter by country
+        filteredFeatures = filterCountry(filteredFeatures);
         var filteredCities = convertToFeatures(
             filteredFeatures
             );
@@ -255,24 +266,25 @@ Timeline.prototype.initVis = function(){
 
         // Move a black vertical line along timeline
         //vis.ticker.style("display", "none");
-        vis.ticker.select("line.tickerline").transition();
-        vis.ticker.select("line.tickerline").remove();
-        // ticker for timeline
-        vis.ticker.append("line")
-            .attr("class", "tickerline")
-            .style("stroke", "black")
-            .attr("y1", 0)
-            .attr("y2", vis.height)
-            .on("click", mouseclick);
-
-        vis.ticker.style("display", null);
-        vis.ticker.select("line.tickerline")
-            .attr("transform",
-            "translate(" + vis.x(d) + ",0)")
-            .transition().duration((365 - d.getMonth()*30 - d.getDate()) * dayDelay * 1000)
-            .ease("linear")
-            .attr("transform",
-            "translate(" + vis.timelineWidth + ",0)");
+        //vis.ticker.select("line.tickerline").transition();
+        //vis.ticker.select("line.tickerline").remove();
+        //// ticker for timeline
+        //vis.ticker.append("line")
+        //    .attr("class", "tickerline")
+        //    .style("stroke", "black")
+        //    .attr("y1", 0)
+        //    .attr("y2", vis.height)
+        //    .on("click", mouseclick);
+        //
+        //vis.ticker.style("display", null);
+        //vis.ticker.select("line.tickerline")
+        //    .attr("transform",
+        //    "translate(" + vis.x(d) + ",0)")
+        //    .transition().duration((365 - d.getMonth()*30 - d.getDate()) * dayDelay * 1000)
+        //    .ease("linear")
+        //    .attr("transform",
+        //    "translate(" + vis.timelineWidth + ",0)");
+        vis.moveTicker(d);
 
     }
 
