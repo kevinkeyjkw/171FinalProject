@@ -76,15 +76,15 @@ var transform = d3.geo.transform({point: projectPoint});
 var d3path = d3.geo.path().projection(transform);
 
 // Overlay region svg onto map
-d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
+d3.json("subregion_South-Eastern_Asia_subunits.json", function(error, collection){
     if(error){
         console.log(error);
     }
-    d3.json("subregion_South-Eastern_Asia_subunits.json", function(error2, collection2){
-        if(error2){
-            console.log(error2);
-        }
-        collection.features = collection.features.concat(collection2.features);
+//    d3.json("subregion_South-Eastern_Asia_subunits.json", function(error2, collection2){
+//        if(error2){
+//            console.log(error2);
+//        }
+//        collection.features = collection.features.concat(collection2.features);
         console.log(collection);
         var feature = g.selectAll("path")
             .data(collection.features)
@@ -96,11 +96,14 @@ d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
             .attr("class", "country_path")
             .on("click", function(d){
                 $(this).toggleClass("country_clicked");
+                barchart.updateVisualization();
             });
 
         // Set a random country to selected to show user you can select countries
 
         $($(".country_path")[2]).toggleClass("country_clicked");
+        $($(".country_path")[1]).toggleClass("country_clicked");
+        $($(".country_path")[0]).toggleClass("country_clicked");
         global_collection = collection;
         reset();
         map.on("viewreset", reset);
@@ -119,7 +122,7 @@ d3.json("subregion_Southern_Asia_subunits.json", function(error, collection){
 
             feature.attr("d", d3path);
         }
-    })
+ //   })
 
 
 });
@@ -196,6 +199,9 @@ function readData(){
             $(".check").prop('checked', $(this).prop('checked'));
         });
         $(".check").prop('checked', true);
+        $(".check").click(function(){
+           barchart.updateVisualization();
+        });
 
         cleanedData = allData;
 
@@ -349,6 +355,7 @@ function filterCountry(filteredFeatures){
     $(".country_clicked").each(function(){
         selectedCountryTypes.push($(this).attr('value'));
     });
+
 
     // Filter based on conflict type from checkboxes
     filteredFeatures = filteredFeatures.filter(function(x){
@@ -504,11 +511,13 @@ function brushed() {
 
         // Filter by country selected
         tmp = filterCountry(tmp);
-
+        console.log("TMP!");
+        console.log(tmp);
         var filteredCities = convertToFeatures(
             //Filter based on checkboxes
             tmp
         );
+
         if(filteredCities.features.length == 0){
             return;
         }
