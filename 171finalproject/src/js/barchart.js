@@ -114,7 +114,6 @@ Barchart.prototype.updateVisualization = function(){
         .enter()
         .append("rect")
         .attr("class", "bar");
-    //.attr("transform", function(d) { return "translate(" + x(d.country) + ",0)"; });
 
     // Update (set the dynamic properties of the elements)
     vis.state

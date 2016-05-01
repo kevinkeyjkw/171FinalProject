@@ -181,8 +181,10 @@ function readData(){
             }
         });
         console.log(conflictTypes);
-        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc",
-            "orange", "green", "#0000A6", "#1CE6FF"]);
+        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc", "orange", "green", "#0000A6", "#1CE6FF"]);
+            //["#e7969c", "#6baed6", "#98df8a", "#ffbb78", "#c5b0d5", "#f7b6d2", "#bcbd22", "#9edae5"]);
+            //
+
 
         // Add legend to right panel
         for(var i=0;i<conflictTypes.length;i++){
@@ -329,7 +331,7 @@ function stop(){
     clearInterval(dayInterval);
     timeline.ticker.select("line.tickerline").transition();
     timeline.ticker.select("line.tickerline").remove();
-    $("#day").html();
+    $("#day").empty();
     $("#note").empty();
 }
 
