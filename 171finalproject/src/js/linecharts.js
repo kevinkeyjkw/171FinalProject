@@ -398,7 +398,7 @@ Linechart.prototype.initVis = function() {
         .append("g")
         .attr("transform", "translate(" + vis.marginMap.left + "," + vis.marginMap.top + ")");
 
-    vis.marginView = {top: 0, right: 20, bottom: 0, left: 20};
+    vis.marginView = {top: 0, right: 0, bottom: 0, left: 0};
     vis.widthView = 600 - vis.marginView.left - vis.marginView.right;
     vis.heightView = 100 - vis.marginView.top - vis.marginView.bottom;
     vis.svgView = d3.select("#view-text").append("svg")
@@ -427,7 +427,7 @@ Linechart.prototype.initVis = function() {
     vis.mapLinks
         .append("text")
         .attr("x", 500)
-        .attr("y", 10)
+        .attr("y", 30)
         .attr("id", "select-all")
         .attr("text-anchor", "end")
         .attr("class", "link")
@@ -436,11 +436,17 @@ Linechart.prototype.initVis = function() {
 
     vis.mapLinks.append("text")
         .attr("x", 500)
-        .attr("y", 30)
+        .attr("y", 50)
         .attr("class", "link")
         .attr("id", "select-none")
         .attr("text-anchor", "end")
         .text("Select None");
+
+    vis.mapLinks.append("text")
+        .attr("x", 500)
+        .attr("y", 10)
+        .attr("text-anchor", "end")
+        .text("[click individual countries to select]");
 
     // join geo data to paths
     vis.countries = vis.svgMap.selectAll("path")
@@ -696,10 +702,41 @@ Linechart.prototype.initVis = function() {
         });
         $('#India-check').prop("checked", true);
         $('#Pakistan-check').prop("checked", true);
-        $("#select-box-2").val('riots');
-        $("#select-box-1").val('conflicts');
+        $('#Bangladesh-check').prop("checked", true);
+        $("#select-box-2").val('all');
+        $("#select-box-1").val('fatalities');
         vis.updateChart();
         vis.view1();
+    });
+
+    $('#view-2').click(function() {
+        $(':checkbox').each(function() {
+            this.checked = false;
+        });
+        $('#Myanmar-check').prop("checked", true);
+        $('#Thailand-check').prop("checked", true);
+        $('#Nepal-check').prop("checked", true);
+        $("#select-box-2").val('all');
+        $("#select-box-1").val('conflicts');
+        vis.updateChart();
+        vis.view2();
+    });
+
+    $('#view-3').click(function() {
+        $(':checkbox').each(function() {
+            this.checked = false;
+        });
+        $('#Vietnam-check').prop("checked", true);
+        $('#Laos-check').prop("checked", true);
+        $('#Cambodia-check').prop("checked", true);
+        $("#select-box-2").val('all');
+        $("#select-box-1").val('conflicts');
+        vis.updateChart();
+        vis.view3();
+    });
+
+    $('#view-4').click(function() {
+        vis.view4();
     });
 
     $('#select-all').click(function() {
@@ -755,63 +792,7 @@ Linechart.prototype.initVis = function() {
 
 
 
-Linechart.prototype.view1 = function() {
-    var vis = this; // read about the this
 
-    vis.svg
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 490)
-        .attr("y", 10)
-        .attr("font-size", "30px")
-        .attr("font-weight", "bold")
-        .text("1");
-
-    vis.svgMap
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 150)
-        .attr("y", 100)
-        .attr("font-size", "30px")
-        .attr("font-weight", "bold")
-        .text("2");
-
-    vis.svgBar
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 270)
-        .attr("y", 150)
-        .attr("font-size", "30px")
-        .attr("font-weight", "bold")
-        .text("3");
-
-    vis.svgView
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 0)
-        .attr("y", 10)
-        .text("1 - India experienced a surge in violence due to Presidential elections");
-
-    vis.svgView
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 0)
-        .attr("y", 30)
-        .text("2 - Most violence occurs in the border region between Pakistan and India");
-
-    vis.svgView
-        .append("text")
-        .attr("class", "view")
-        .attr("x", 0)
-        .attr("y", 50)
-        .text("3 - India experiences far more conflict than Pakistan");
-
-    $("svg").on("click", function(){
-        d3.selectAll(".view")
-            .remove();
-    });
-
-};
 
 Linechart.prototype.initLegend = function() {
     var vis = this; // read about the this
@@ -998,6 +979,218 @@ Linechart.prototype.initLegend = function() {
 };
 
 
+Linechart.prototype.view1 = function() {
+    var vis = this; // read about the this
+
+    d3.selectAll(".view")
+        .remove();
+
+    vis.svg
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 30)
+        .attr("y", 160)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("1");
+
+    vis.svgMap
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 80)
+        .attr("y", 50)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("2");
+
+    vis.svgBar
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 100)
+        .attr("y", 120)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("3");
+
+    vis.svgMap
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 165)
+        .attr("y", 280)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("4");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 10)
+        .text("1 - A strike imposed by the Bangladeshi National Party led to many deaths in February");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 30)
+        .text("2 - Military offenses against rebel groups make Pakistan the most violent country in SE Asia");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 50)
+        .text("3 - Most conflict occurs in the Federally Administered Tribal Regions in Northern Pakistan");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 70)
+        .text("4 - In Southern India, most political conflict is caused by Maoist rebels in the region");
+
+    $("svg").on("click", function(){
+        d3.selectAll(".view")
+            .remove();
+    });
+
+};
+
+Linechart.prototype.view3 = function() {
+    var vis = this; // read about the this
+
+    d3.selectAll(".view")
+        .remove();
+
+    vis.svg
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 200)
+        .attr("y", 50)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("1");
+
+    vis.svgBar
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 20)
+        .attr("y", 30)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("2");
 
 
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 10)
+        .text("1 - Protests in this region is not correlated with the electoral cycle. The ACLED speculates");
 
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 20)
+        .attr("y", 30)
+        .text("that conflict more often focuses on issues impacting quality of life, like pollution");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 50)
+        .text("2 - Each of these countries reports relatively low levels of political conflict, with only a few dozen");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 20)
+        .attr("y", 70)
+        .text("violent events being recorded for the year.");
+
+
+    $("svg").on("click", function(){
+        d3.selectAll(".view")
+            .remove();
+    });
+
+
+};
+
+Linechart.prototype.view2 = function() {
+    var vis = this; // read about the this
+
+    d3.selectAll(".view")
+        .remove();
+
+    vis.svg
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 350)
+        .attr("y", 50)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("1");
+
+    vis.svg
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 100)
+        .attr("y", 100)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("2");
+
+
+    vis.svgMap
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 350)
+        .attr("y", 300)
+        .attr("font-size", "30px")
+        .attr("font-weight", "bold")
+        .text("3");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 10)
+        .text("1 - Conflict increased in Nepal as protesters demanded a new, more democratic constitution");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 30)
+        .text("2 - Decades-long separatist violence in Myanmar began to decline in the first half of the year");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 0)
+        .attr("y", 50)
+        .text("3 - Political violence in Thailand occurs almost exclusively in the South, where rebel groups");
+
+    vis.svgView
+        .append("text")
+        .attr("class", "view")
+        .attr("x", 20)
+        .attr("y", 70)
+        .text("conduct random attacks, making government retaliation difficult");
+
+    $("svg").on("click", function(){
+        d3.selectAll(".view")
+            .remove();
+    });
+
+};
+
+Linechart.prototype.view4 = function() {
+    var vis = this; // read about the this
+
+    d3.selectAll(".view")
+        .remove();
+
+};
