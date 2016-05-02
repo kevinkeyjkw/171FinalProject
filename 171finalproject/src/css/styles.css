@@ -16,7 +16,9 @@ h1 {
 h2 {
   font-size: 40px;
   font-weight: 300;
-  color: #3D4351; }
+  /*color: #3D4351; */
+    color: #393b79;
+}
 
 h3 {
   font-size: 24px;
@@ -524,7 +526,7 @@ Features-stack
     padding-bottom: 0px;
     border-bottom: none; }
   .features .wrap {
-    width: 706px;
+    width: 580px;
     height: 1002px;
     background: url("../images/stats_pic.jpg") no-repeat center center;
     z-index: 1; }

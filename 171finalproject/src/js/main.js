@@ -205,10 +205,6 @@ function readData(){
 
         cleanedData = allData;
 
-        // Create stacked barchart
-        createBarchart(cleanedData);
-
-
         cleanedData.forEach(function(d){
             if(d.EVENT_DATE.getTime() in dayConflictDict){
                 dayConflictDict[d.EVENT_DATE.getTime()] += 1;
@@ -218,7 +214,8 @@ function readData(){
         });
 
         createTimeline(dayConflictDict);
-
+        // Create stacked barchart
+        createBarchart(cleanedData);
 
         // Mean of fatalities
         var fatMean = d3.mean(cleanedData.map(function(d){return d.FATALITIES;}));
@@ -468,10 +465,6 @@ function addlocations(filteredCities, startDate){
 
 }
 
-//function createLinechart(data){
-//    linechart = new Linechart("line-chart-1", data);
-//}
-
 function createTimeline(data){
     timeline = new Timeline("timeline", data);
 };
@@ -490,8 +483,13 @@ $.fn.scrollView = function () {
         }, 1000);
     });
 }
-$(window).load(function(){
-    $('#myModal').modal('show');
+//$(window).load(function(){
+//    //$('#myModal').modal('show');
+//    console.log(window.location.hash);
+//    $(window.location.hash).scrollView();
+//});
+$( document ).ready(function(){
+    $(window.location.hash).scrollView();
 });
 $("#myModalCloseButton").on("click", function(){
     $('#startHere').scrollView();
