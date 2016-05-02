@@ -294,7 +294,9 @@ div.tooltip {
     stroke: #000;
     shape-rendering: crispEdges;
 }
-
+#explore{
+    background-color: #E5E6EB;
+}
 .tooltip-title {
     display: block;
     margin-bottom: 5px;
