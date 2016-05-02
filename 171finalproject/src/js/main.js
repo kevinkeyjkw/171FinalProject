@@ -19,7 +19,7 @@ var noteFadeIn = 3, noteFadeOut = notesDelay - noteFadeIn;
 var filterCountryCriteria = [];
 var filterConflictCriteria = [];
 var timeline;
-var linechart;
+//var linechart;
 var barchart;
 
 var speed=800;
@@ -181,10 +181,8 @@ function readData(){
             }
         });
         console.log(conflictTypes);
-        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc", "orange", "green", "#0000A6", "#1CE6FF"]);
-            //["#e7969c", "#6baed6", "#98df8a", "#ffbb78", "#c5b0d5", "#f7b6d2", "#bcbd22", "#9edae5"]);
-            //
-
+        c20.domain(conflictTypes).range(["#000000", "#FFFF00", "#B21018", "#fff8dc",
+            "orange", "green", "#0000A6", "#1CE6FF"]);
 
         // Add legend to right panel
         for(var i=0;i<conflictTypes.length;i++){
@@ -470,9 +468,9 @@ function addlocations(filteredCities, startDate){
 
 }
 
-function createLinechart(data){
-    linechart = new Linechart("line-chart-1", data);
-}
+//function createLinechart(data){
+//    linechart = new Linechart("line-chart-1", data);
+//}
 
 function createTimeline(data){
     timeline = new Timeline("timeline", data);
@@ -493,10 +491,19 @@ $.fn.scrollView = function () {
     });
 }
 $(window).load(function(){
-    //$('#myModal').modal('show');
+    $('#myModal').modal('show');
 });
 $("#myModalCloseButton").on("click", function(){
     $('#startHere').scrollView();
+});
+$("#exploreNav").on("click", function(){
+   $("#explore").scrollView();
+});
+$("#timelapseNav").on("click", function(){
+    $("#timelapse").scrollView();
+});
+$("#overviewNav").on("click", function(){
+    $("#overview").scrollView();
 });
 function brushed() {
 

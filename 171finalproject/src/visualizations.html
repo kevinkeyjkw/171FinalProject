@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="css/jquery-ui.min.css">
     <link href="css/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <style>
-        .link:hover {
-            font-weight: bold;
-        }
-    </style>
 
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
@@ -62,98 +57,81 @@
 </div>
 
 <div class="container">
-
-
     <div class="row">
         <div class="col-xs-12">
-            <h1 class="text-center">Explore Levels of Conflict Throughout the Year</h1><br>
+            <h1 class="text-center">Explore Levels of Conflict Throughout the Year</h1>
         </div>
     </div>
-
     <div class="row">
-        <span id="legend-top"></span>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-6">
-            <span id="line-chart"></span>
-            <br>
-            <span id="bar-chart"></span>
-        </div>
-        <div class="col-lg-6">
-            <span id="topo-map"></span>
-            <span id="view-text"></span>
+        <div class="col-lg-9">
+            <span id="line-chart-1"></span>
+            <br/>
             <form class="form-inline">
                 <div class="form-group">
-                    <span>Showing </span>
-                    <select class="form-control select-box" style="font-size:20px; height:40px" id="select-box-1" >
-                        <option value="fatalities" >Fatalities</option>
-                        <option value="conflicts" ># of Conflicts</option>
-                    </select>
-                    <span>from</span>
-                    <select class="form-control select-box" style="font-size:20px; height:40px" id="select-box-2" >
-                        <option value="all" >All Conflicts</option>
-                        <option value="civilViolence" >Violence against Civilians</option>
-                        <option value="riots" >Riots and Protests</option>
-                        <option value="battles" >Battles</option>
-                        <option value="remoteViolence" >Remote Violence</option>
-
-                    </select>
+                    <label>Show me:</label>
                     <!--for="rankingType"-->
-
+                    <select class="form-control select-box" id="select-box-1" >
+                        <option value="fatalities" >Fatalities</option>
+                        <option value="conflicts" >Conflicts</option>
+                    </select>
+                    <select class="form-control select-box" id="select-box-2" >
+                        <option value="monthly" >by Month</option>
+                        <option value="weekly" >by Week</option>
+                    </select>
+                    <select class="form-control select-box" id="select-box-3" >
+                        <option value="byCountry" >per Country</option>
+                        <option value="aggregate" >in Aggregate</option>
+                    </select>
                 </div>
             </form>
+
         </div>
+        <div class="col-lg-3">
+            <form action="">
+                <input type="checkbox" name="country" checked= "yes" value="Bangladesh">  Bangladesh<span class="squared" style="position: absolute;right:160px;background: yellow;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Cambodia">  Cambodia<span class="squared" style="position: absolute;right:160px;background: lightgreen;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="India">  India<span class="squared" style="position: absolute;right:160px;background: red;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Laos">  Laos<span class="squared" style="position: absolute;right:160px;background: darkgreen;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Myanmar">  Myanmar<span class="squared" style="position: absolute;right:160px;background: blue;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Nepal">  Nepal<span class="squared" style="position: absolute;right:160px;background: purple;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Pakistan">  Pakistan<span class="squared" style="position: absolute;right:160px;background: orange;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Sri Lanka">  Sri Lanka<span class="squared" style="position: absolute;right:160px;background: gray;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Thailand">  Thailand<span class="squared" style="position: absolute;right:160px;background: magenta;">&nbsp;</span><br>
+                <input type="checkbox" name="country" checked= "yes" value="Vietnam">  Vietnam<span class="squared" style="position: absolute;right:160px;background: violet;">&nbsp;</span><br>
+            </form>
+        </div>
+
     </div>
-
-    <div class="row" style="text-align: center; font-size:20px">
-        Set Views:
-        <span style="padding-right:30px"></span>
-        <a id="view-1">India and Pakistan</a>
-        <span style="padding-right:30px"></span>
-        <a id="view-2">Indochina</a>
-        <span style="padding-right:30px"></span>
-        <a id="view-3">Elections in Nepal</a>
-        <span style="padding-right:30px"></span>
-        <a id="view-4">ISIS Attacks</a>
-        <span style="padding-right:30px"></span>
-        <a id="view-5">Other View</a>
-
-
-    </div>
-
-    <div class="row">
-        <form action="">
-            <input type="checkbox" name="country" style="display:none" id="Pakistan-check" checked= "yes" value="Pakistan">
-            <input type="checkbox" name="country" style="display:none" id="India-check" checked= "yes" value="India">
-            <input type="checkbox" name="country" style="display:none" id="Nepal-check" checked= "yes" value="Nepal">
-            <input type="checkbox" name="country" style="display:none" id="Bangladesh-check" checked= "yes" value="Bangladesh">
-            <input type="checkbox" name="country" style="display:none" id="Myanmar-check" checked= "yes" value="Myanmar">
-            <input type="checkbox" name="country" style="display:none" id="Thailand-check" checked= "yes" value="Thailand">
-            <input type="checkbox" name="country" style="display:none" id="Laos-check" checked= "yes" value="Laos">
-            <input type="checkbox" name="country" style="display:none" id="Cambodia-check" checked= "yes" value="Cambodia">
-           <!--<input type="checkbox" name="country" style="display:none" id="Sri Lanka-check" checked= "no" value="Sri Lanka">-->
-            <input type="checkbox" name="country" style="display:none" id="Vietnam-check" checked= "yes" value="Vietnam">
-    </div>
-
 </div>
 
 
 <script src="js/jquery-1.12.0.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/d3.min.js"></script>
-<script src="js/queue.min.js"></script>
-<script src="js/topojson.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/d3.legend.js"></script>
 <script src="js/timeline.js"></script>
 <script src="js/linecharts.js"></script>
-
 <!--<script src="js/main.js"></script>-->
 <script>
     // Read in data
+    var cleanData;
+    var linechart;
+    var dateFormat = d3.time.format("%d-%B-%Y");
+    d3.csv("ACLED-Asia-Version-1-20151.csv", function(allData) {
 
+        // Convert strings to numbers
+        allData.forEach(function (d) {
+            d.EVENT_DATE = dateFormat.parse(d.EVENT_DATE);
+            d.FATALITIES = +d.FATALITIES;
+            d.LATITUDE = +d.LATITUDE;
+            d.LONGITUDE = +d.LONGITUDE;
+        });
+        cleanData = allData;
+
+        linechart = new Linechart("line-chart-1", cleanData);
+    });
 
 </script>
 </body>

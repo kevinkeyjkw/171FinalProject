@@ -13,132 +13,259 @@
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/jquery-ui.min.css">
-        <link href="css/custom.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
+
+
 
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <link href="css/custom.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/main.css">
 
     </head>
-    <body>
+    <body id="top">
 
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Logo and responsive toggle -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <span class="glyphicon glyphicon-fire"></span>
-                    CS171 Team: Slack
-                </a>
-            </div>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active">
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="visualizations.html">Visulizations</a>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container -->
-    </nav>
+    <section class="hero">
+        <section class="navigation">
+            <header>
+                <div class="header-content">
 
-    <!-- Feature -->
-    <div class="jumbotron feature">
-        <div class="container">
-            <h1><span class="glyphicon glyphicon-equalizer"></span> Armed Conflicts in Southeast Asia</h1>
-        </div>
-    </div>
+                    <div class="header-nav">
+                        <nav>
+                            <ul class="primary-nav">
+                                <li><a class="nav-text" id="overviewNav">Overview</a></li>
+                                <li><a  class="nav-text" id="timelapseNav">Time Lapse</a></li>
+                                <li><a  class="nav-text" id="exploreNav">Explore</a></li>
+                                <li><a  class="nav-text">Process Book</a></li>
+                            </ul>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h1 class="text-center">Overview</h1>
-                <p class="lead text-center">Our final project is about the conflicts that have occurred in southeast asia for the year 2015.
-                    At a high level, our goal is to show users that the conflicts in southeast asia are going up/down. .</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-center">Time Lapse</h1>
-            </div>
-        </div>
-        <div class="row" id="startHere">
-            <div class="col-lg-10">
-                <div id="note"></div>
-            </div>
-            <div class="col-lg-2">
-                <!--<span class="day">Day </span>-->
-                <span id="day" class="day" style="text-decoration: underline;"></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-10"><div id="map"></div></div>
-            <div class="col-lg-2 control text-center" >
-                <div class="row ">
-                    <div class="col-lg-12 text-center">
-                        <button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="play()">
-                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                        </button>
+                        </nav>
+                    </div>
+                    <div class="navicon">
+                        <a class="nav-toggle" href="#"><span></span></a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                    <button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="stop()">
-                        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-                    </button>
-                        </div>
+            </header>
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="hero-content text-center">
+                        <h1>Armed Conflicts in Southeast Asia</h1>
+                        <p class="intro">Team: Slack </p>
+                        <!--<a href="#" class="btn btn-fill btn-large btn-margin-right">Download</a> <a href="#" class="btn btn-accent btn-large">Learn more</a>-->
+                    </div>
                 </div>
-                <div class="row">
+            </div>
+        </div>
+        <div class="down-arrow floating-arrow"><a href="#"><i class="fa fa-angle-down"></i></a></div>
+    </section>
+    <section class="intro padding" id="overview">
+        <div class="container">
+
+            <div class="intro-content text-center">
+                <h3>Project Overview</h3>
+            </div>
+            <p>Our final project is about the conflicts that have occurred in southeast asia for the year 2015. At a high level,
+                our goal is to show users that the conflicts in southeast asia are going up/down. We will highlight distinctions between
+                the types and frequency of political violence and protests throughout 2015, a general review of rioting in Southeast Asia.
+                We use time lapse, stacked bar chart, line chart to show information on the exact location, date, and
+                other characteristics of politically violent events in unstable and warring states.
+            </p>
+        </div>
+    </section>
+
+    <section class="features section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="feature-list">
+                        <h3>Conflicts Statistics in year 2015</h3>
+                        <ul class="features-stack">
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe040;" class="icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <p>Total number of conflicts for all countries in 2015: xxxx.</p>
+                                    <p>Total number of fatalities for all countries in 2015: xxxx.</p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe040;" class="icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <p>India has the most number of conflicts: 1000 </p>
+                                    <p>Pakistan has the most number of fatalities: 2000 </p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe040;" class="icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <p>Month had the most conflicts for all countries in 2015: xxx</p>
+                                    <p>Month had the least conflicts for all countries in 2015: xxx</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="img"><img src="images/stats_pic.jpg"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </section>
+
+
+    <section class="features-extra section-padding" id="timelapse">
+        <div class="container">
+
+            <div class="row" >
+                <div class="col-lg-10">
+                    <div id="note"></div>
+                </div>
+                <div class="col-lg-2">
+                    <!--<span class="day">Day </span>-->
+                    <span id="day" class="day" style="text-decoration: underline;"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10"><div id="map"></div></div>
+                <div class="col-lg-2 control text-center" >
+                    <div class="row ">
+                        <div class="col-lg-12 text-center">
+                            <button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="play()">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" id="clickMe" class="btn btn-default btn-lg" onclick="stop()">
+                                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-12" id="legend">
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="timeline"></div>
+                    <p> * Click and drag your mouse along the white space of the timeline</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="text-center">Compare major conflicts among all countries during year of 2015</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" style="left: 50px;">
+                    <select id="y-type" class="form-control" style="width: 20%;">
+                        <option value="Conflicts">Conflicts</option>
+                        <option value="Fatalities">Fatalities</option>
+                    </select>
+                </div>
+                <div class="col-lg-12">
+                    <div id="barchart"></div>
+                    <!--<p> * Hover to see the number of conflicts within each category</p>-->
+                    <p>* Filter by clicking on the countries and conflict types above this</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <div id="timeline"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-center">Compare major conflicts among all countries during year of 2015</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12" style="left: 50px;">
-                <select id="y-type" class="form-control" style="width: 20%;">
-                    <option value="Conflicts">Conflicts</option>
-                    <option value="Fatalities">Fatalities</option>
-                </select>
-            </div>
-            <div class="col-lg-12">
-                <div id="barchart"></div>
-                <p> * Hover to see the number of conflicts within each category</p>
-            </div>
-        </div>
-    </div>
+
+    </section>
+
+    <section id="explore">
+        <div class="container">
 
 
-    <!-- Footer -->
-    <footer>
-        <!-- Copyright etc -->
-        <div class="small-print">
-            <div class="container">
-                <p><a href="#">Terms &amp; Conditions</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
-                <p>All data sourced from the Armed Conflict Location & Event Data Project website. </p>
-                <p>	Visualization created by Team Slack for CS171. </p>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="text-center">Explore Levels of Conflict Throughout the Year</h1><br>
+                </div>
             </div>
-        </div>
 
-    </footer>
+            <div class="row">
+                <span id="legend-top"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <span id="line-chart"></span>
+                    <br>
+                    <span id="bar-chart"></span>
+                </div>
+                <div class="col-lg-6">
+                    <span id="topo-map"></span>
+                    <span id="view-text"></span>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <span>Showing </span>
+                            <select class="form-control select-box" style="font-size:20px; height:40px" id="select-box-1" >
+                                <option value="fatalities" >Fatalities</option>
+                                <option value="conflicts" ># of Conflicts</option>
+                            </select>
+                            <span>from</span>
+                            <select class="form-control select-box" style="font-size:20px; height:40px" id="select-box-2" >
+                                <option value="all" >All Conflicts</option>
+                                <option value="civilViolence" >Violence against Civilians</option>
+                                <option value="riots" >Riots and Protests</option>
+                                <option value="battles" >Battles</option>
+                                <option value="remoteViolence" >Remote Violence</option>
+
+                            </select>
+                            <!--for="rankingType"-->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row" style="text-align: center; font-size:20px">
+                Set Views:
+                <span style="padding-right:30px"></span>
+                <a id="view-1">India and Pakistan</a>
+                <span style="padding-right:30px"></span>
+                <a id="view-2">Indochina</a>
+                <span style="padding-right:30px"></span>
+                <a id="view-3">Elections in Nepal</a>
+                <span style="padding-right:30px"></span>
+                <a id="view-4">ISIS Attacks</a>
+                <span style="padding-right:30px"></span>
+                <a id="view-5">Other View</a>
+
+
+            </div>
+
+            <div class="row">
+                <form action="">
+                    <input type="checkbox" name="country" style="display:none" id="Pakistan-check" checked= "yes" value="Pakistan">
+                    <input type="checkbox" name="country" style="display:none" id="India-check" checked= "yes" value="India">
+                    <input type="checkbox" name="country" style="display:none" id="Nepal-check" checked= "yes" value="Nepal">
+                    <input type="checkbox" name="country" style="display:none" id="Bangladesh-check" checked= "yes" value="Bangladesh">
+                    <input type="checkbox" name="country" style="display:none" id="Myanmar-check" checked= "yes" value="Myanmar">
+                    <input type="checkbox" name="country" style="display:none" id="Thailand-check" checked= "yes" value="Thailand">
+                    <input type="checkbox" name="country" style="display:none" id="Laos-check" checked= "yes" value="Laos">
+                    <input type="checkbox" name="country" style="display:none" id="Cambodia-check" checked= "yes" value="Cambodia">
+                    <!--<input type="checkbox" name="country" style="display:none" id="Sri Lanka-check" checked= "no" value="Sri Lanka">-->
+                    <input type="checkbox" name="country" style="display:none" id="Vietnam-check" checked= "yes" value="Vietnam">
+            </div>
+
+        </div>
+    </section>
+
+
 
 
     <!-- Modal -->
@@ -164,23 +291,18 @@
 
 
 
-
-
-
-
-
-        <script src="js/jquery-1.12.0.min.js"></script>
+    <script src="js/jquery-1.12.0.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/d3.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/d3.legend.js"></script>
         <script src="js/timeline.js"></script>
+    <script src="js/queue.min.js"></script>
+    <script src="js/topojson.js"></script>
         <script src="js/linecharts.js"></script>
     <script src="js/d3.tip.v0.6.3.js"></script>
         <script src="js/barchart.js"></script>
-    <script src="js/queue.min.js"></script>
-    <script src="js/topojson.js"></script>
         <script src="js/main.js"></script>
 
     </body>

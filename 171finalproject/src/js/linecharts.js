@@ -2,16 +2,16 @@ var cleanData;
 var linechart;
 var dateFormat = d3.time.format("%d-%B-%Y");
 var monthFormat = d3.time.format("%B");
-var map;
+var map2;
 
 
 // initialize projection parameters and path
-var projection = d3.geo.mercator()
+var projection2 = d3.geo.mercator()
     .translate([600 / 2, 340 / 2])
     .scale(550)
     .center([90,22]);
-var path = d3.geo.path()
-    .projection(projection);
+var path2 = d3.geo.path()
+    .projection(projection2);
 
 
 // Use the Queue.js library to read two files
@@ -22,7 +22,7 @@ queue()
     .await(function(error, mapTopJson, allData){
 
         // update map variable with geo data
-        map = topojson.feature(mapTopJson, mapTopJson.objects.subunits).features;
+        map2 = topojson.feature(mapTopJson, mapTopJson.objects.subunits).features;
 
         // Convert strings to numbers
         allData.forEach(function (d) {
@@ -407,7 +407,7 @@ Linechart.prototype.initVis = function() {
         .append("g")
         .attr("transform", "translate(" + vis.marginView.left + "," + vis.marginView.top + ")");
 
-    var asiaMap = map.filter( function(d) {
+    var asiaMap = map2.filter( function(d) {
         if (d.properties.name == "Bangladesh" ||
             d.properties.name == "Cambodia" ||
             d.properties.name == "India" ||
@@ -526,7 +526,7 @@ Linechart.prototype.initVis = function() {
         .attr("fill", function(d) {
             return vis.colors[d.properties.name];})
         .attr("opacity",.2)
-        .attr("d", path);
+        .attr("d", path2);
 
     // exit (not needed?)
     vis.countries.exit()
